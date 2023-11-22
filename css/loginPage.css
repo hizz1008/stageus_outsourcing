@@ -1,0 +1,161 @@
+/* reset */
+body{
+  margin: 0;
+  padding: 0;
+  background-color: #F3F3F3;
+}
+a{
+  text-decoration-line: none;
+  color: #595959;
+}
+h1{
+  margin: 0;
+}
+/* /reset */
+.header{
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #4285F4;
+  padding: 10px 2%;
+
+}
+.headerLogo{
+  font-size: 30px;
+  color: white;
+}
+
+.main{
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 75%;
+
+  background-color: white;
+
+}
+.form{
+  width: 67%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 20px 0;
+}
+.title{
+  font-weight: 400;
+  color: #595959;
+
+  margin-bottom: 10px;
+}
+
+.btnStyle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 320px;
+  height: 40px;
+  margin-bottom: 10px;
+
+  border: none;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 13px;
+  
+}
+.loginBtn{
+  background-color: #4285F4;
+}
+.signUpBtn{
+  background-color: #01C246;
+}
+.aLink{
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+/* signUp */
+.idInputDiv{
+  display: flex;
+  justify-content: space-between;
+}
+.idInputStyle{
+  width: 230px;
+  padding: 10px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #EEEEEE;
+  color: #595959;
+}
+.idValidationBtn{
+  width: 75px;
+  height: 37.5px;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+.inputStyle{
+  width: 320px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #EEEEEE;
+  color: #595959;
+}
+.telValidationText{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 0 10px 0;
+  font-size: 12px;
+
+  color: #595959;
+}
+.passwordValidationText{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 0 10px 0;
+  font-size: 12px;
+
+  color: #4285F4;
+}
+
+.departmentSelect{
+  width: 320px;
+  height: 37.5px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border:1px solid #EEEEEE;
+
+  color: #595959;
+
+}
+.positionSelect{
+  width: 320px;
+  height: 37.5px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border:1px solid #EEEEEE;
+
+  color: #595959;
+}

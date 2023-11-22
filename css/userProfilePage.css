@@ -1,0 +1,24 @@
+p{
+  margin: 0;
+}
+.userProfiles{
+  width: 250px;
+  margin-top: 10px;
+}
+.userProfileInfo{
+  margin-bottom: 20px;
+}
+.userProfileBtnStyle{
+  width: 100px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+.editBtn{
+  margin-right: 10px;
+  background-color: #01C246;
+}
+.deleteBtn{
+  background-color: #FF0101;
+}
