@@ -27,7 +27,7 @@
     var userProfiles = {
       name: "방준연",
       tel: "01001000100",
-      department: "개발부",
+      department: "개발팀",
       position: "팀원",
     }
     function updateUserProfile(){

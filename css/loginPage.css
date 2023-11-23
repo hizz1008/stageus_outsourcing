@@ -17,8 +17,12 @@ h1{
   width: 100%;
   background-color: #4285F4;
   padding: 10px 2%;
-
 }
+
+/* 메인 색상과 폰트는 전역변수로 저장이 가능 
+태그들의 들어가는 기본 설정들 이렇게 두가지 파일이 추가, 탬플릿css로 공통으로 사용하게 되는 css 예-input 스타일은 전부 똑같기 때문에 이렇게 두가지 css 파일을 저장
+헤더.Css또한 별도로 존재하는 것이 좋음*/
+
 .headerLogo{
   font-size: 30px;
   color: white;
@@ -42,7 +46,7 @@ h1{
   background-color: white;
 
 }
-.form{
+.formstyle{
   width: 67%;
   display: flex;
   flex-direction: column;
@@ -73,7 +77,6 @@ h1{
   cursor: pointer;
 
   font-size: 13px;
-  
 }
 .loginBtn{
   background-color: #4285F4;
@@ -108,6 +111,8 @@ h1{
 
   cursor: pointer;
 }
+
+
 .inputStyle{
   width: 320px;
   padding: 10px;

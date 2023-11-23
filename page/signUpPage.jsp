@@ -9,11 +9,11 @@
   <main class="main">
    <section class="section">
     <h1 class="title">스케줄러 로그인</h1>
-    <form class="form">
+    <form class="form formstyle">
     <div class="idInputDiv">
         <input class="idInputStyle idInput" type="text" value="아이디" onfocus="inputFocus(event)" onblur="inputBulr(event)">
 
-        <input class="idValidationBtn" type="button" value="중복확인" onclick="idValidationEvent()">
+        <input class="idValidationBtn" type="button" value="중복확인" onclick="IdduplicateCheckEvent()">
       </div>
 
       <input class="inputStyle passwordInput" type="text" value="비밀번호" onfocus="inputFocus(event)" onblur="inputBulr(event)" onclick="typePasswordEvent(event)">
@@ -31,8 +31,8 @@
 
       <select class="departmentSelect">
         <option selected disabled>부서</option>
-        <option value="개발부">개발부</option>
-        <option value="디자인부">디자인부</option>
+        <option value="개발팀">개발팀</option>
+        <option value="디자인팀">디자인팀</option>
       </select>
 
       <select class="positionSelect">
@@ -51,7 +51,8 @@
     function typePasswordEvent(e){
       e.target.type = "password"
     }
-    function idValidationEvent(){
+
+    function IdduplicateCheckEvent(){
       var idInput = document.querySelector(".idInput")
       var regex = /^[a-zA-Z0-9]+$/;
 
@@ -59,7 +60,7 @@
         idInput.disabled = false;
         return alert("올바른 형식의 아이디를 입력해주세요")
       }else{
-        idInput.disabled = true;
+        return idInput.disabled = true;
       }
     }
 
@@ -87,7 +88,7 @@
     var departmentSelect = document.querySelector(".departmentSelect")
     var positionSelect = document.querySelector(".positionSelect")
     var passwordRegex = /^[a-zA-Z0-9]+$/;
-    var nameRegex = /^[ㄱ-ㅎㅏ-ㅣ가-힣]+$/;
+    var nameRegex = /^[ㄱ-ㅎㅏ-ㅣ]+$/;
     var telRegex = /^\d+$/;
 
 

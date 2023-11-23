@@ -10,16 +10,16 @@
   <main class="main">
     <section class="section">
       <h1 class="title">개인정보 수정</h1>
-      <form class="editUserProfiles">
+      <form class="form editUserProfiles">
         <p class="infoStyle">이름</p>
-        <input class="inputStyle name" type="text">
+        <input class="inputStyle nameInput" type="text">
         <p class="infoStyle">전화번호</p>
-        <input class="inputStyle tel" type="tel">
+        <input class="inputStyle telInput" type="tel">
 
         <p class="infoStyle">부서</p>
         <select class="departmentSelect">
-          <option value="개발부">개발부</option>
-          <option value="디자인부">디자인부</option>
+          <option value="개발팀">개발팀</option>
+          <option value="디자인팀">디자인팀</option>
         </select>
   
         <p class="infoStyle">직책</p>
@@ -29,7 +29,7 @@
         </select>
       </form>
 
-        <input class="btnStyle loginBtn" type="button" value="수정">
+        <input class="btnStyle loginBtn" type="button" value="수정" onclick="findIdFormValidationEvent(event)">
 
     </section>
   </main>
@@ -41,8 +41,8 @@
       position: "팀원",
     }
     function updateUserProfile(){
-      document.querySelector(".name").value = userProfiles.name
-      document.querySelector(".tel").value = userProfiles.tel
+      document.querySelector(".nameInput").value = userProfiles.name
+      document.querySelector(".telInput").value = userProfiles.tel
     }
     updateUserProfile()
 
@@ -67,5 +67,6 @@
     }
     //
   </script>
+  <script src="../javascript/validation.js"></script>
   <script src="../javascript/createHeader1.js"></script>
 </body>
