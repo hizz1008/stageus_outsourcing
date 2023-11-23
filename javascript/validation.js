@@ -47,20 +47,17 @@ function ValidationEvent(input){
     return true
   }
 }
-
-
-
-
-
-function findPasswordFormValidationEvent(e){
-  e.preventDefault()
-  var form = document.querySelector(".form")
-  var id = document.querySelector(".idInput")
-  var tel = document.querySelector(".telInput")
-  if(idValidationEvent(id) && telValidationEvent(tel)){
-    form.submit()
-  }
+function idAlert(){
+  alert("올바른 형식의 아이디를 입력해주세요")
+  return
 }
+function telAlert(){
+  alert("올바른 형식의 전화번호를 입력해주세요")
+}
+
+
+
+
 function addPlanValidationEvent(e){
   e.preventDefault()
   var addPlanInput = document.querySelector(".addPlanInput")
