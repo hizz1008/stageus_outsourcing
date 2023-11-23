@@ -1,21 +1,5 @@
 /* reset */
-body{
-  margin: 0;
-  padding: 0;
-  background-color: #F3F3F3;
-}
-a{
-  text-decoration-line: none;
-  color: #595959;
-}
-p,h1,form{
-  margin: 0;
-}
-ol{
-  list-style-type: none;
-  display: flex;
-  margin: 0;
-}
+
 /* /reset */
 #headerbars{
   font-size: 20px;

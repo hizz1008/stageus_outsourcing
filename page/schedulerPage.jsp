@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/reset.css" type="text/css">
+  <link rel="stylesheet" href="../css/common.css" type="text/css">
   <link rel="stylesheet" href="../css/schedulerPage.css" type="text/css">
   <title>Schedule Page</title>
 </head>
@@ -99,7 +101,7 @@
         var headerbars = document.createElement("i")
         headerbars.id = "headerbars"
         headerbars.className = "fa-solid fa-bars headerbars"
-        headerbars.onclick = headerbarsEvent
+        headerbars.onclick = openNavEvent
 
         var headerLogo = document.createElement("a")
         headerLogo.className = "headerLogo"
@@ -190,7 +192,6 @@
       currentMonth = monthCell.value
 
       calendar()
-      //세션으로 사용
     }
     function calendar(){
       var main = document.querySelector(".main")
@@ -241,7 +242,7 @@
   calendar()
   
   function scheduleOpenEvent(){
-    var childWindow = window.open("./page/scheduleDetailsPage.jsp", "_blank", "width=600,height=400");
+    var childWindow = window.open("./schedulerDetailModal.jsp", "_blank", "width=700,height=800");
     childWindow.onload = ()=>{
       childWindow.receiveUserPlan(userPlan);
     }
@@ -256,7 +257,7 @@
   }
   //함수 이름 통일성 필요
 
-  function headerbarsEvent(){
+  function openNavEvent(){
     var nav = document.querySelector(".nav")
     var blackBackground = document.querySelector(".blackBackground")
     nav.style.left = "0%"

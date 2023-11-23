@@ -1,22 +1,4 @@
 @import "./globalVariable.css";
-/* reset */
-body{
-  margin: 0;
-  padding: 0;
-  background-color: #F3F3F3;
-}
-a{
-  text-decoration-line: none;
-  color: #595959;
-}
-h1{
-  margin: 0;
-  font-size: var(--font-big);
-}
-p{
-  margin: 0;
-}
-/* /reset */
 
 .mainStyle{
   width: 100%;

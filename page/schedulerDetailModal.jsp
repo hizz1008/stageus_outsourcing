@@ -1,33 +1,37 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/scheduleDetailsPage.css" type="text/css">
+  <link rel="stylesheet" href="../css/reset.css" type="text/css">
+  <link rel="stylesheet" href="../css/schedulerDetailModal.css" type="text/css">
   <title>Schedule Details Page</title>
 </head>
 <body>
-  <header class="header">
+  <header id="header" class="headerStyle">
     <h1 class="dayNum"></h1>
   </header>
-  <main class="main">
+  <main class="mainStyle">
     <section class="planSection">
     </section>
 
-    <section class="setTimeSection">
-      <div class="setStartTime">
-        <p class="setStartTimeText">시작</p>
-        <select class="selectStartHour"></select>
-        <select class="selectStartMin"></select>
-      </div>
-      <div class="setEndTime">
-        <p class="setEndTimeText">종료</p>
-        <select class="selectEndHour"></select>
-        <select class="selectEndMin"></select>
-      </div>
-    </section>
+
 
     <form class="inputSection">
-      <input class="addPlanInput" type="text">
-      <input class="addPlanBtn btnStyle" type="submit" value="등록" onclick="addPlanValidationEvent(event)">
+      <section class="setTimeSection">
+        <div class="setStartTime">
+          <p class="setStartTimeText">시작</p>
+          <select class="selectStartHour"></select>
+          <select class="selectStartMin"></select>
+        </div>
+        <div class="setEndTime">
+          <p class="setEndTimeText">종료</p>
+          <select class="selectEndHour"></select>
+          <select class="selectEndMin"></select>
+        </div>
+      </section>
+      <section class="addPlanSection">
+        <input class="addPlanInput" type="text">
+        <input class="addPlanBtn btnStyle" type="submit" value="등록" onclick="addPlanValidationEvent(event)">
+      </section>
     </form>
   </main>
   <script>
@@ -71,14 +75,16 @@
  
       dayNum.textContent = data.dayNum;
       for(var i = 0; i < data.title.length; i++){
-        var planContent = document.createElement("div")
-        var planTitle = document.createElement("p")
-        var startTime = document.createElement("p")
-        var endTime = document.createElement("p")
+        var planTable = document.createElement("table")
+        var planTr = document.createElement("tr")
+        var planTitle = document.createElement("td")
+        var startTime = document.createElement("td")
+        var endTime = document.createElement("td")
         var editBtn = document.createElement("input")
         var deleteBtn = document.createElement("input")
 
-        planContent.className = "planContent"
+        planTable.className = "planTable"
+        planTr.className = "planTr"
 
         editBtn.value = "수정"
         editBtn.type = "submit"
@@ -96,13 +102,16 @@
 
         
 
-        planContent.appendChild(planTitle)
-        planContent.appendChild(startTime)
-        planContent.appendChild(endTime)
-        planContent.appendChild(editBtn)
-        planContent.appendChild(deleteBtn)
+        planTable.appendChild(planTr)
+        
+        planTr.appendChild(planTitle)
+        planTr.appendChild(startTime)
+        planTr.appendChild(endTime)
+        
+        planTable.appendChild(editBtn)
+        planTable.appendChild(deleteBtn)
 
-        planSection.appendChild(planContent)
+        planSection.appendChild(planTable)
       }
     }
   </script>

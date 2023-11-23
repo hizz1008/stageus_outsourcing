@@ -1,0 +1,25 @@
+@import "./globalVariable.css";
+/* reset */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-f3);
+}
+
+a {
+  text-decoration-line: none;
+  color: var(--color-black);
+}
+
+h1,
+p,
+form {
+  margin: 0;
+}
+
+ol {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+}
+/* /reset */

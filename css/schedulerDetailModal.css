@@ -1,0 +1,84 @@
+@import "./globalVariable.css";
+
+.headerStyle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--color-black);
+}
+.mainStyle{
+  width: 100%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.planSection{
+  width: 40%;
+  margin-bottom: 40px;
+}
+.planTable{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.planTr{
+  width: 100%;
+}
+.inputSection{
+  width: 100%;
+
+  position: fixed;
+  padding: 3% 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-top: 1px solid var(--color-black);
+}
+.setTimeSection{
+  margin-bottom: 3%;
+}
+.addPlanSection{
+  width: 40%;
+  display: flex;
+  justify-content: center;
+}
+.setStartTime{
+  display: flex;
+}
+.setEndTime{
+  display: flex;
+}
+.addPlanInput{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--color-e);
+  color: var(--color-black);
+}
+.btnStyle{
+  width: 20%;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 10px;
+  border-radius: 10px;
+
+  font-size: var(--font-small);
+
+  border: none;
+
+  color: var(--color-black);
+  background-color: #cdcdcd;
+
+  cursor: pointer;
+}

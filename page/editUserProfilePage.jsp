@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/reset.css" type="text/css">
   <link rel="stylesheet" href="../css/common.css" type="text/css">
   <link rel="stylesheet" href="../css/loginBeforeHeader.css" type="text/css">
   <link rel="stylesheet" href="../css/editUserProfilePage.css" type="text/css">

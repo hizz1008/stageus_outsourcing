@@ -92,5 +92,3 @@ function monthEvent(e){
   monthCell.classList.add("selectedMonth")
   currentMonth = monthCell.value
 }
-
-// 헤더1은 로그인 되기 전 헤더2는 로그인 된 헤더로 이름을 짓는 것이 좋음
