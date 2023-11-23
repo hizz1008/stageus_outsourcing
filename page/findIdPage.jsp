@@ -31,8 +31,9 @@
         return alert("올바른 이름을 입력해주세요")
       }else if(!numValidationEvent(tel) || tel.value.length !== 11){
         return alert("올바른 전화번호를 입력해주세요")
+      }else{
+        form.submit()
       }
-      form.submit()
     }
   </script>
   <script src="../javascript/validation.js"></script>

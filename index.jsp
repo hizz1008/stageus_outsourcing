@@ -32,8 +32,9 @@
         return idAlert()
       }else if(!numEnglishValidationEvent(password)){
         return passwordAlert()
+      }else{
+        form.submit()
       }
-      form.submit()
     }
   </script>
   <script src="./javascript/validation.js"></script>

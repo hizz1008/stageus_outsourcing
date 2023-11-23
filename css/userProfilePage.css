@@ -17,8 +17,8 @@ p{
 }
 .editBtn{
   margin-right: 10px;
-  background-color: #01C246;
+  background-color: var(--color-green);
 }
 .deleteBtn{
-  background-color: #FF0101;
+  background-color: var(--color-red);
 }

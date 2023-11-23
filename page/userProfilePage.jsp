@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/loginPage.css" type="text/css">
+  <link rel="stylesheet" href="../css/common.css" type="text/css">
+  <link rel="stylesheet" href="../css/loginBeforeHeader.css" type="text/css">
   <link rel="stylesheet" href="../css/userProfilePage.css" type="text/css">
   <title>User Profile Page</title>
 </head>
 <body>
-  <header class="header"></header>
-  <main class="main">
-    <section class="section">
-      <h1 class="Title">개인정보</h1>
+  <header id="header" class="headerStyle"></header>
+  <main class="mainStyle">
+    <section class="sectionStyle">
+      <h1 class="titleStyle">개인정보</h1>
       <section class="userProfiles">
         <p class="userProfileInfo">이름 : <span class="name"></span></p>
         <p class="userProfileInfo">전화번호 : <span class="tel"></span></p>

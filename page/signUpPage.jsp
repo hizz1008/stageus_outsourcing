@@ -106,8 +106,9 @@
       return alert("부서를 선택해주세요");
     } else if(positionSelect.value === "직책"){
       return alert("직책을 선택해주세요");
+    }else{
+      signUpForm.submit();
     }
-    signUpForm.submit();
   }
 
 
