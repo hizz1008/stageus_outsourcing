@@ -29,9 +29,9 @@
       var password = document.querySelector("#passwordInput")
       var form = document.querySelector("#form")
       if(!numEnglishValidationEvent(id)){
-        return alert("올바른 아이디를 입력해주세요")
+        return idAlert()
       }else if(!numEnglishValidationEvent(password)){
-        return alert("올바른 비밀번호를 입력해주세요")
+        return passwordAlert()
       }
       form.submit()
     }

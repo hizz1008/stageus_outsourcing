@@ -54,7 +54,9 @@ function idAlert(){
 function telAlert(){
   alert("올바른 형식의 전화번호를 입력해주세요")
 }
-
+function passwordAlert(){
+  alert("올바른 비밀번호를 입력해주세요")
+}
 
 
 
