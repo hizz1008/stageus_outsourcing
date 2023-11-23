@@ -78,15 +78,7 @@ h1{
   border: 1px solid #EEEEEE;
   color: #595959;
 }
-.idValidationBtn{
-  width: 75px;
-  height: 37.5px;
 
-  border: none;
-  border-radius: 10px;
-
-  cursor: pointer;
-}
 
 
 .inputStyle{

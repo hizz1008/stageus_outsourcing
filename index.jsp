@@ -15,7 +15,7 @@
         <input id="idInput" class="inputStyle" type="text" placeholder="아이디">
         <input id="passwordInput" class="inputStyle " type="password" placeholder="비밀번호">
         <input class="btnStyle loginBtn" type="submit" value="로그인" onclick="loginFormValidationEvent(event)">
-        <a class="btnStyle signUpBtn" href="./signUpPage.jsp">회원가입</a>
+        <a class="btnStyle signUpBtn" href="./page/signUpPage.jsp">회원가입</a>
   
         <a class="aLink" href="./page/findIdPage.jsp">아이디 찾기</a>
         <a class="aLink" href="./page/findPasswordPage.jsp">비밀번호 찾기</a>

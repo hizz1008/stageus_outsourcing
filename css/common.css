@@ -40,7 +40,7 @@ p{
   justify-content: center;
   align-items: center;
 
-  width: 35%;
+  width: 100%;
   height: 40px;
   margin-bottom: 10px;
 
@@ -53,7 +53,7 @@ p{
   font-size: var(--font-small);
 }
 .formstyle{
-  width: 70%;
+  width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,22 +67,18 @@ p{
   margin-bottom: 10px;
 }
 .inputStyle{
-  width: 35%;
+  width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid var(--color-e);
   color: var(--color-black);
 }
-.idInputStyle{
-  width: 230px;
-  padding: 10px;
-  margin-right: 15px;
-  margin-bottom: 10px;
-  border: 1px solid var(--color-e);
-  color: var(--color-black);
-}
+
 .BGcolorBlue{
   background-color: var(--color-blue);
+}
+.BGcolorGreen{
+  background-color: var(--color-green);
 }
 
 .telValidationTextStyle{
@@ -98,4 +94,15 @@ p{
 .aLinkStyle{
   margin-bottom: 5px;
   font-size: var(--font-small);
+}
+.selectStyle{
+  width: 100%;
+  height: 37.5px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border:1px solid #EEEEEE;
+
+  color: #595959;
 }

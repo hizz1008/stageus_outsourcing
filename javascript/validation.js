@@ -25,17 +25,6 @@ function koreanValidationEvent(input){
   }
 }
 
-function idValidationEvent(idInput){
-  var regex = /^[a-zA-Z0-9]+$/;
-
-  if(idInput.value === "아이디" || !regex.test(idInput.value) ){
-    alert("올바른 형식의 아이디를 입력해주세요")
-    return false
-  }else{
-    return true
-  }
-}
-
 //문자, 숫자 가능 유효성 검사 이벤트로 이름 수정
 function ValidationEvent(input){
   var regex = /^[0-9a-zA-Z\uAC00-\uD7A3]+$/;
@@ -56,6 +45,9 @@ function telAlert(){
 }
 function passwordAlert(){
   alert("올바른 비밀번호를 입력해주세요")
+}
+function nameAlert(){
+  alert("올바른 이름을 입력해주세요")
 }
 
 
