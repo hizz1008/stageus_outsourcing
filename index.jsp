@@ -7,7 +7,7 @@
   <title>Login Page</title>
 </head>
 <body>
-  <header class="header"></header>
+  <header id="header" class="headerStyle"></header>
   <main class="main">
     <section class="section">
       <h1 class="title">스케줄러 로그인</h1>
@@ -37,5 +37,5 @@
     }
   </script>
   <script src="./javascript/validation.js"></script>
-  <script src="./javascript/createHeader1.js"></script>
+  <script src="./javascript/beforeLoginHeader.js"></script>
 </body>

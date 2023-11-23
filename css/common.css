@@ -11,7 +11,10 @@ a{
 }
 h1{
   margin: 0;
-  font-size: 25px;
+  font-size: var(--font-big);
+}
+p{
+  margin: 0;
 }
 /* /reset */
 
@@ -47,7 +50,7 @@ h1{
 
   cursor: pointer;
 
-  font-size: 13px;
+  font-size: var(--font-small);
 }
 .formstyle{
   width: 70%;
@@ -58,7 +61,7 @@ h1{
   padding: 20px 0;
 }
 .titleStyle{
-  font-weight: 400;
+  font-weight: var(--fontW-normal);
   color: var(--color-black);
 
   margin-bottom: 10px;
@@ -80,4 +83,19 @@ h1{
 }
 .BGcolorBlue{
   background-color: var(--color-blue);
+}
+
+.telValidationTextStyle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 0 10px 0;
+  font-size: var(--font-small);
+
+  color: #595959;
+}
+.aLinkStyle{
+  margin-bottom: 5px;
+  font-size: var(--font-small);
 }

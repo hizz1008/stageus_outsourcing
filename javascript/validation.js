@@ -7,20 +7,18 @@ function numEnglishValidationEvent(input){
   }
 }
 
-function numValidationEvent(telInput){
+function numValidationEvent(input){
   var regex = /^\d+$/;
-  if(!regex.test(telInput.value) || telInput.value.length !== 11){
-    alert("올바른 형식의 전화번호를 입력해주세요")
+  if(!regex.test(input.value)){
     return false
   }else{
     return true
   }
 }
 
-function nameValidationEvent(nameInput){
-  var regex = /^[ㄱ-ㅎㅏ-ㅣ]+$/;
-  if(!regex.test(nameInput.value) || nameInput.value === "이름"){
-    alert("올바른 형식의 이름을 입력해주세요")
+function koreanValidationEvent(input){
+  var regex = /^[가-힣]+$/;
+  if(!regex.test(input.value)){
     return false
   } else{
     return true
