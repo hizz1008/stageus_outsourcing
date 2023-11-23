@@ -1,0 +1,10 @@
+.header{
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--color-blue);
+  padding: 10px 2%;
+}
+.headerLogo{
+  font-size: 30px;
+  color: white;
+}
