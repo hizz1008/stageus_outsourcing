@@ -14,34 +14,35 @@
     <h1 class="titleStyle">스케줄러 로그인</h1>
     <form id="form" class="formstyle">
     <div class="idInputDiv">
-        <input id="idInput" class="idInputStyle" type="text" placeholder="아이디" onchange="idOnchangeEvent(event)">
+        <input id="idInput" class="idInputStyle" type="text" placeholder="아이디" name="id" onchange="idOnchangeEvent(event)">
+        <input id="idDuplicationInput" type="hidden" name="idDuplication" value="false">
 
         <input class="idValidationBtn" type="button" value="중복확인" onclick="IdDuplicateCheckEvent(event)">
       </div>
 
-      <input id="passwordInput" class="inputStyle" type="password" placeholder="비밀번호">
+      <input id="passwordInput" class="inputStyle" type="password" placeholder="비밀번호" name="password">
 
       <input id="passwordConfirmInput" class="inputStyle" type="password" placeholder="비밀번호 재입력"
       oninput="passwordValidationEvent(event)">
 
       <p id="passwordValidationText" class="passwordValidationTextStyle"></p>
 
-      <input id="nameInput" class="inputStyle" type="text" placeholder="이름">
+      <input id="nameInput" class="inputStyle" type="text" placeholder="이름" name="name">
 
-      <input id="telInput" class="inputStyle" type="tel" placeholder="전화번호">
+      <input id="telInput" class="inputStyle" type="tel" placeholder="전화번호" name="tel">
 
       <p class="telValidationTextStyle">- 없이 기입해주세요</p>
 
-      <select id="departmentSelect" class="selectStyle">
+      <select id="departmentSelect" class="selectStyle" name="department">
         <option selected disabled>부서</option>
-        <option value="개발팀">개발팀</option>
-        <option value="디자인팀">디자인팀</option>
+        <option value="1">개발팀</option>
+        <option value="2">디자인팀</option>
       </select>
 
-      <select id="positionSelect" class="selectStyle">
+      <select id="positionSelect" class="selectStyle" name="position">
         <option selected disabled>직책</option>
-        <option value="팀장">팀장</option>
-        <option value="팀원">팀원</option>
+        <option value="1">팀장</option>
+        <option value="2">팀원</option>
       </select>
       
       <input class="btnStyle BGcolorgreen" type="submit" value="회원가입" onclick="signUpValidationEvent(event)"></input>
@@ -52,19 +53,23 @@
   <script>
 
     function idOnchangeEvent(e){
-      var idInput = e.target.value
-      if(idInput === e.target.value){
-        
-      }
+      idDuplicationInput.value = "false"
+    }
+
+    function receiveDataFromChild(data){
+      console.log(data)
     }
 
     function IdDuplicateCheckEvent(){
+      var form = document.querySelector("#form")
       var idInput = document.querySelector("#idInput")
+      var idDuplicationInput = document.querySelector("#idDuplicationInput")
       if(!numEnglishValidationEvent(idInput)){
         idInput.disabled = false;
+        idDuplicationInput.value = "false"
         return idAlert()
       }else{
-        return idInput.disabled = true;
+      var childWindow = window.open("../action/idDPCheckAction.jsp?id="+idInput.value,"","width=500,height=300")
       }
     }
 
@@ -85,6 +90,7 @@
     e.preventDefault()
     var signUpForm = document.querySelector("#form")
     var idInput = document.querySelector("#idInput")
+    var idDuplicationInput = document.querySelector("#idDuplicationInput")
     var passwordInput = document.querySelector("#passwordInput")
     var passwordConfirmInput = document.querySelector("#passwordConfirmInput")
     var nameInput = document.querySelector("#nameInput")
@@ -93,7 +99,7 @@
     var positionSelect = document.querySelector("#positionSelect")
 
 
-    if (!idInput.disabled){
+    if (idDuplicationInput.value === "false"){
       return alert("아이디 중복을 확인해주세요");
     } else if(!numEnglishValidationEvent(passwordInput)){
       return passwordAlert()
@@ -108,6 +114,8 @@
     } else if(positionSelect.value === "직책"){
       return alert("직책을 선택해주세요");
     }else{
+      idInput.disabled = false
+      signUpForm.action = "../action/signUpAction.jsp"
       signUpForm.submit();
     }
   }

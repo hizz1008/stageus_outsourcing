@@ -13,8 +13,8 @@
     <section class="section">
       <h1 class="title">스케줄러 로그인</h1>
       <form id="form" class="formstyle">
-        <input id="idInput" class="inputStyle" type="text" placeholder="아이디">
-        <input id="passwordInput" class="inputStyle " type="password" placeholder="비밀번호">
+        <input id="idInput" class="inputStyle" type="text" placeholder="아이디" name="id">
+        <input id="passwordInput" class="inputStyle " type="password" placeholder="비밀번호" name="password">
         <input class="btnStyle loginBtn" type="submit" value="로그인" onclick="loginFormValidationEvent(event)">
         <a class="btnStyle signUpBtn" href="./page/signUpPage.jsp">회원가입</a>
   
@@ -34,6 +34,7 @@
       }else if(!numEnglishValidationEvent(password)){
         return passwordAlert()
       }else{
+        form.action = "./action/loginAction.jsp"
         form.submit()
       }
     }
