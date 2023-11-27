@@ -4,6 +4,10 @@ p{
 .infoStyle{
   margin-bottom: 10px;
 }
-.editUserProfiles{
-  align-items: flex-start;
+.editUserProfile{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 20px 0;
 }

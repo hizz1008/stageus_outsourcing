@@ -1,4 +1,11 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%
+  Integer idx = (Integer)session.getAttribute("loggedInSession");
+  if(idx != null){
+    response.sendRedirect("./page/schedulerPage.jsp");
+  }
+%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/reset.css" type="text/css">

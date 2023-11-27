@@ -1,4 +1,34 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%
+  Integer idx = (Integer)session.getAttribute("loggedInSession");
+
+  Class.forName("com.mysql.cj.jdbc.Driver");
+  Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/schedule", "stageus", "1234");
+
+  String name = "";
+  String tel = "";
+  int department = -1;
+  int position = -1;
+
+  String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
+  PreparedStatement query = connect.prepareStatement(sql);
+  query.setInt(1, idx);
+
+  ResultSet result = query.executeQuery();
+  if (result.next()) {
+    name = result.getString("name");
+    tel = result.getString("tel");
+    department = result.getInt("department");
+    position = result.getInt("position");
+  }else{
+    response.sendRedirect("../index.jsp");
+  }
+%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/reset.css" type="text/css">
@@ -12,7 +42,7 @@
   <main class="mainStyle">
     <section class="sectionStyle">
       <h1 class="titleStyle">개인정보</h1>
-      <section class="userProfiles">
+      <section class="userProfile">
         <p class="userProfileInfo">이름 : <span class="name"></span></p>
         <p class="userProfileInfo">전화번호 : <span class="tel"></span></p>
         <p class="userProfileInfo">부서 : <span class="department"></span></p>
@@ -26,19 +56,31 @@
     </section>
   </main>
   <script>
-    var userProfiles = {
-      name: "방준연",
-      tel: "01001000100",
-      department: "개발팀",
-      position: "팀원",
-    }
+    var idx = <%=idx%>;
+    var userProfile = {
+        name : "<%=name%>",
+        tel : "<%=tel%>",
+        department : <%=department%>,
+        position : <%=position%>
+    };
     function updateUserProfile(){
-      document.querySelector(".name").textContent = userProfiles.name
-      document.querySelector(".tel").textContent = userProfiles.tel
-      document.querySelector(".department").textContent = userProfiles.department
-      document.querySelector(".position").textContent = userProfiles.position
+      document.querySelector(".name").textContent = userProfile.name
+      document.querySelector(".tel").textContent = userProfile.tel
+      if(userProfile.department === 1){
+        userProfile.department = "개발팀"
+      }else{
+        userProfile.department = "디자인팀"
+      }
+      if(userProfile.position === 1){
+        userProfile.position = "팀장"
+      }else{
+        userProfile.position = "팀원"
+      }
+      document.querySelector(".department").textContent = userProfile.department
+      
+      document.querySelector(".position").textContent = userProfile.position
     }
-    updateUserProfile()
+    
     //
     function confirmationAlert(){
       var confirmAlert = confirm("정말로 탈퇴하시겠습니까?")
@@ -53,6 +95,9 @@
     function editPageEvent(){
       window.location.href = "./editUserProfilePage.jsp"
     }
+    window.onload = function(){
+      updateUserProfile()
+    }
   </script>
-  <script src="../javascript/createHeader1.js"></script>
+  <script src="../javascript/beforeLoginHeader.js"></script>
 </body>
