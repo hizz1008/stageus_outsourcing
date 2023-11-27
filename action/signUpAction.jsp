@@ -14,6 +14,7 @@
   String tel = request.getParameter("tel");
   String department = request.getParameter("department");
   String position = request.getParameter("position");
+  int errorResult = -1;
   // 받아온 데이터에 대한 명시
 
   // connector 파일 불러오기
@@ -29,21 +30,33 @@
   queryDuplicate.setString(1, id);
   ResultSet resultSet = queryDuplicate.executeQuery();
   if(!resultSet.next()){
-    String sql = "INSERT INTO account (id, password, name, tel, department, position) VALUES (?, ?, ?, ?, ?, ?)";
-    PreparedStatement query = connect.prepareStatement(sql);
-    query.setString(1, id);
-    query.setString(2, password);
-    query.setString(3, name);
-    query.setString(4, tel);
-    query.setString(5, department);
-    query.setString(6, position);
-    // 쿼리 실행
-    query.executeUpdate();
+    if(tel.length() == 11){
+      String sql = "INSERT INTO account (id, password, name, tel, department, position) VALUES (?, ?, ?, ?, ?, ?)";
+      PreparedStatement query = connect.prepareStatement(sql);
+      query.setString(1, id);
+      query.setString(2, password);
+      query.setString(3, name);
+      query.setString(4, tel);
+      query.setString(5, department);
+      query.setString(6, position);
+      // 쿼리 실행
+      query.executeUpdate();
 
-    session.setAttribute("loggedInId", id);
-    response.sendRedirect("../index.jsp");
+      session.setAttribute("loggedInId", id);
+      response.sendRedirect("../index.jsp");
+    }else{
+      errorResult = 2;
+    }
+  }else{
+    errorResult = 1;
   }
 %>
 <script>
-  alert("중복된 아이디입니다")
+  var errorResult = "<%=errorResult%>"
+  if(errorResult === 1){
+    alert("중복된 아이디입니다")
+  }else if(errorResult === 2){
+    alert("올바른 형식의 전화번호를 입력해주세요")
+  }
+  
 </script>

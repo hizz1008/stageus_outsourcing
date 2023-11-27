@@ -1,4 +1,36 @@
 <%@ page language="java" contentType="text/html" pageEncoding="utf-8"%>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%
+  Integer idx = (Integer)session.getAttribute("loggedInSession");
+  Integer currentYear = (Integer)session.getAttribute("currentYear");
+  Integer currentMonth = (Integer)session.getAttribute("currentMonth");
+
+  Class.forName("com.mysql.cj.jdbc.Driver");
+  Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/schedule", "stageus", "1234");
+
+  String name = "";
+  String tel = "";
+  int department = -1;
+  int position = -1;
+
+  String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
+  PreparedStatement query = connect.prepareStatement(sql);
+  query.setInt(1, idx);
+
+  ResultSet result = query.executeQuery();
+  if (result.next()) {
+    name = result.getString("name");
+    tel = result.getString("tel");
+    department = result.getInt("department");
+    position = result.getInt("position");
+  }else{
+    response.sendRedirect("./loginPage.jsp");
+  }
+%>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/reset.css" type="text/css">
@@ -13,11 +45,11 @@
   <nav class="nav">
     <div class="navHeader">
       <p class="navUserInfo"></p>
-      <a href="./page/userProfilePage.jsp" class="navUserName"></a>
+      <a href="./userProfilePage.jsp" class="navUserName"></a>
       <input class="closeNavBtn" type="button" value="X" onclick="closeNavEvent()">
     </div>
 
-    <div class="otherUserProfiles">
+    <div class="otherUserProfile">
       <p class="otherUserDepartment"></p>
       <div class="otherUserNames"></div>
     </div>
@@ -25,13 +57,20 @@
   <main class="main">
   </main>
   <script>
-    var userProfiles = {
-      name: "방준연",
-      tel: "01001000100",
-      department: "개발팀",
-      position: "팀장",
-    }
-    var otherUserProfiles = {
+    var idx = <%=idx%>;
+    var currentYear = <%=currentYear%>;
+    var currentMonth = <%=currentMonth%>;
+    var name = "<%=name%>";
+    var tel = "<%=tel%>";
+
+    var userProfile = {
+        name : name,
+        tel : tel,
+        department : <%=department%>,
+        position : <%=position%>
+    };
+
+    var otherUserProfile = {
       name: ["사용자1","사용자2","사용자3"],
       department: ["개발팀","개발팀","디자인팀"],
       position: ["팀원","팀원","팀원"]
@@ -48,51 +87,41 @@
       endTime : ["12:00", "14:00"],
       dayNum : 3
     }
-    var user1 = {
-      yearNum : 2023,
-      monthNum : 11,
-      dayNum : [3,5,12,15],
-      planNum : [2,10,32,100]
-    }
-    var user2 = {
-      yearNum : 2023,
-      monthNum : 11,
-      dayNum : [1,2,3,4],
-      planNum : [1,2,20,100]
-    }
-    var user3 = {
-      yearNum : 2023,
-      monthNum : 11,
-      dayNum : [5,6,7,8],
-      planNum : [2,10,32,100]
-    }
-    function createUserProfiles(){
+    function createUserProfile(){
       var navUserInfo = document.querySelector(".navUserInfo")
       var navUserName = document.querySelector(".navUserName")
-      navUserInfo.textContent = userProfiles.department + " " + userProfiles.position
-      navUserName.textContent = userProfiles.name
+      if(userProfile.department === 1){
+        userProfile.department = "개발팀"
+      }else{
+        userProfile.department = "디자인팀"
+      }
+      if(userProfile.position === 1){
+        userProfile.position = "팀장"
+      }else{
+        userProfile.position = "팀원"
+      }
+      navUserInfo.textContent = userProfile.department + " " + userProfile.position
+      navUserName.textContent = userProfile.name
     }
-    createUserProfiles()
-    function createOtherUserProfiles(){
-      var navOtherUserProfiles = document.querySelector(".navotherUserProfiles")
+    
+    function createOtherUserProfile(){
+      var navOtherUserProfile = document.querySelector(".navotherUserProfile")
       var otherUserDepartment = document.querySelector(".otherUserDepartment")
       var otherUserNames = document.querySelector(".otherUserNames")
 
-      for(var i = 0; i < otherUserProfiles.name.length; i++){
-        if(otherUserProfiles.department[i] === userProfiles.department){
-          otherUserDepartment.textContent = otherUserProfiles.department[i]
+      for(var i = 0; i < otherUserProfile.name.length; i++){
+        if(otherUserProfile.department[i] === userProfile.department){
+          otherUserDepartment.textContent = otherUserProfile.department[i]
           var otherUserName = document.createElement("p")
-          otherUserName.textContent = otherUserProfiles.name[i]
+          otherUserName.textContent = otherUserProfile.name[i]
           otherUserNames.appendChild(otherUserName)
         }
       }
     }
-    createOtherUserProfiles();
+    
 
 
     var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    var currentMonth = currentDate.getMonth() + 1;
     function createHeader(){
       var header = document.querySelector(".header")
 
@@ -148,38 +177,31 @@
         right.className = "right"
         var userName = document.createElement("a")
         userName.className = "userName"
-        userName.textContent = userProfiles.name
-        userName.href = "./page/userProfilePage.jsp"
-        
-        var form = document.createElement("form")
-        var logoutBtn = document.createElement("input")
+        userName.textContent = userProfile.name
+        userName.href = "./userProfilePage.jsp"
+    
+        var logoutBtn = document.createElement("a")
         logoutBtn.className = "logoutBtn"
-        logoutBtn.type = "submit"
-        logoutBtn.value = "로그아웃"
-        form.appendChild(logoutBtn)
+        logoutBtn.href = "../action/logOutAction.jsp"
+        logoutBtn.textContent = "로그아웃"
 
       right.appendChild(userName)
-      right.appendChild(form)
+      right.appendChild(logoutBtn)
 
       header.appendChild(left)
       header.appendChild(center)
       header.appendChild(right)
     }
-    createHeader()
+    
 
     function leftBtnEvent(){
-      currentYear--
       var yearText = document.querySelector(".yearText")
-      yearText.textContent = currentYear
-      calendar()
+      window.location.href = "../action/minusCurrentYearAction.jsp";
     }
 
     function rightBtnEvent(){
-      currentYear++
       var yearText = document.querySelector(".yearText")
-      yearText.textContent = currentYear
-      calendar()
-
+      window.location.href = "../action/plusCurrentYearAction.jsp";
     }
 
     function monthEvent(e){
@@ -188,10 +210,8 @@
         cell.classList.remove("selectedMonth")
       })
       var monthCell = e.target
-      monthCell.classList.add("selectedMonth")
-      currentMonth = monthCell.value
-
-      calendar()
+      var monthValue = monthCell.value
+      window.location.href = "../action/currentMonthUpdateAction.jsp?currentMonth=" + monthValue;
     }
     function calendar(){
       var main = document.querySelector(".main")
@@ -239,7 +259,6 @@
         main.appendChild(calendarCell);
       }
     }
-  calendar()
   
   function scheduleOpenEvent(){
     var childWindow = window.open("./schedulerDetailModal.jsp", "_blank", "width=700,height=800");
@@ -263,6 +282,14 @@
     nav.style.left = "0%"
     blackBackground.style.display = "block"
   }
+
+  window.onload = function(){
+    createUserProfile()
+    createOtherUserProfile();
+    createHeader()
+    calendar()
+  }
+
   
   </script>
   <script src="https://kit.fontawesome.com/e8e74eadbe.js" crossorigin="anonymous"></script>

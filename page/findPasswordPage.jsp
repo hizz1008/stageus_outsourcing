@@ -12,8 +12,8 @@
     <section class="sectionStyle">
       <h1 class="titleStyle">비밀번호 찾기</h1>
       <form id="form" class="formstyle">
-        <input id="idInput" class="inputStyle" type="text" placeholder="아이디">
-        <input id="telInput" class="inputStyle " type="tel" placeholder="전화번호">
+        <input id="idInput" class="inputStyle" type="text" placeholder="아이디" name="id">
+        <input id="telInput" class="inputStyle " type="tel" placeholder="전화번호" name="tel">
         <p class="telValidationTextStyle">- 없이 기입해주세요</p>
         <input id="loginBtn" class="btnStyle BGcolorBlue" type="submit" value="확인" onclick="findPasswordFormValidationEvent(event)">
       </form>
@@ -30,10 +30,11 @@
       }else if(!numValidationEvent(tel) || tel.value.length !== 11){
         return telAlert()
       }else{
+        form.action = "../action/findPasswordAction.jsp"
         form.submit()
       }
     }
   </script>
   <script src="../javascript/validation.js"></script>
-  <script src="../javascript/createHeader1.js"></script>
+  <script src="../javascript/beforeLoginHeader.js"></script>
 </body>

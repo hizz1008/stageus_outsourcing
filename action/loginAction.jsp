@@ -8,6 +8,7 @@
 <%@ page import="java.sql.ResultSet"%>
 <!-- 리드할 때 임포트 하는 라이브러리 -->
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="java.time.LocalDate" %>
 <!-- 세션을 가져오는 라이브러리 -->
 
 <%
@@ -30,8 +31,12 @@
   //해당 값이 있다면 true를 반환 없다면 false를 반환
   if (result.next()) {
     // 로그인 성공
+    int currentYear = LocalDate.now().getYear();
+    int currentMonth = LocalDate.now().getMonthValue();
     int userIdx = result.getInt("idx");
-    session.setAttribute("loggedSession", userIdx);
+    session.setAttribute("loggedInSession", userIdx);
+    session.setAttribute("currentYear", currentYear);
+    session.setAttribute("currentMonth", currentMonth);
     response.sendRedirect("../page/schedulerPage.jsp");
   }
 %>

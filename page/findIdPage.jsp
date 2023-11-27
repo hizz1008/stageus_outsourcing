@@ -4,7 +4,6 @@
   <link rel="stylesheet" href="../css/reset.css" type="text/css">
   <link rel="stylesheet" href="../css/common.css" type="text/css">
   <link rel="stylesheet" href="../css/loginBeforeHeader.css" type="text/css">
-  <link rel="stylesheet" href="../css/findIdPage.css" type="text/css">
   <title>Find Id Page</title>
 </head>
 <body>
@@ -13,8 +12,8 @@
     <section class="sectionStyle">
       <h1 class="titleStyle">아이디 찾기</h1>
       <form id="form" class="formstyle">
-        <input id="nameInput" class="inputStyle" type="text" placeholder="이름">
-        <input id="telInput" class="inputStyle" type="tel" placeholder="전화번호">
+        <input id="nameInput" class="inputStyle" type="text" placeholder="이름" name="name">
+        <input id="telInput" class="inputStyle" type="tel" placeholder="전화번호" name="tel">
         <p class="telValidationTextStyle">- 없이 기입해주세요</p>
         <input class="btnStyle BGcolorBlue loginBtn" type="submit" value="확인" onclick="findIdFormValidationEvent(event)">
   
@@ -33,6 +32,7 @@
       }else if(!numValidationEvent(tel) || tel.value.length !== 11){
         return alert("올바른 전화번호를 입력해주세요")
       }else{
+        form.action = "../action/findIdAction.jsp"
         form.submit()
       }
     }

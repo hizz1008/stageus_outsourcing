@@ -25,31 +25,25 @@
     idDPResult = 1;
   }
 %>
-<html>
-<head>
-    <title>아이디 중복 확인 결과</title>
-    <script>
-      function displayResult() {
-          var resultText = document.querySelector("#resultText")
-          var result = "<%=result%>";
-          var idDPResult  = "<%=idDPResult%>";
-          var idDuplicationInput = opener.document.querySelector("#idDuplicationInput")
-          var idInput = opener.document.querySelector("#idInput")
-          if(idDPResult == 1){
-            idDuplicationInput.value = "true"
-            idInput.disabled = true
-            alert(result)
-            window.close()
-          }else{
-            idDuplicationInput.value = "false"
-            idInput.disabled = false
-            alert(result)
-            window.close()
-          }
+<title>아이디 중복 확인 결과</title>
+<script>
+  function displayResult() {
+      var resultText = document.querySelector("#resultText")
+      var result = "<%=result%>";
+      var idDPResult  = "<%=idDPResult%>";
+      var idDuplicationInput = opener.document.querySelector("#idDuplicationInput")
+      var idInput = opener.document.querySelector("#idInput")
+      if(idDPResult == 1){
+        idDuplicationInput.value = "true"
+        idInput.disabled = true
+        alert(result)
+        window.close()
+      }else{
+        idDuplicationInput.value = "false"
+        idInput.disabled = false
+        alert(result)
+        window.close()
       }
-      window.onload = displayResult;
-  </script>
-</head>
-<body>
-</body>
-</html>
+  }
+  window.onload = displayResult;
+</script>
