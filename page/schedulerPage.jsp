@@ -4,6 +4,7 @@
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="java.util.ArrayList"%>
 <%
   Integer idx = (Integer)session.getAttribute("loggedInSession");
   Integer currentYear = (Integer)session.getAttribute("currentYear");
@@ -16,6 +17,8 @@
   String tel = "";
   int department = -1;
   int position = -1;
+
+  ArrayList<Integer> planDayList = new ArrayList<Integer>();
 
   if(idx == null){
     response.sendRedirect("../index.jsp");
@@ -35,16 +38,18 @@
       response.sendRedirect("../.jsp");
     }
 
-    String getPlanNumSql = "SELECT idx FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
+    String getPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
     PreparedStatement getPlanNumQuery = connect.prepareStatement(getPlanNumSql);
     getPlanNumQuery.setInt(1,idx);
     getPlanNumQuery.setInt(2,currentYear);
     getPlanNumQuery.setInt(3,currentMonth);
     
     ResultSet getPlanNumResult = getPlanNumQuery.executeQuery();
-    
+    while (getPlanNumResult.next()){
+      int planDay = Integer.parseInt(getPlanNumResult.getString("day_column"));
 
-
+      planDayList.add(planDay);
+    }
   }
 %>
 <head>
@@ -76,26 +81,20 @@
     var idx = <%=idx%>;
     var currentYear = <%=currentYear%>;
     var currentMonth = <%=currentMonth%>;
-    var name = "<%=name%>";
-    var tel = "<%=tel%>";
 
     var userProfile = {
-        name : name,
-        tel : tel,
+        name : "<%=name%>",
+        tel : "<%=tel%>",
         department : <%=department%>,
-        position : <%=position%>
+        position : <%=position%>,
+        planDayList : <%=planDayList%>
     };
+    console.log(userProfile.planDayList)
 
     var otherUserProfile = {
       name: ["사용자1","사용자2","사용자3"],
       department: ["개발팀","개발팀","디자인팀"],
       position: ["팀원","팀원","팀원"]
-    }
-    var user = {
-      yearNum : 2023,
-      monthNum : 11,
-      dayNum : [1,2,3,4,5,6,7],
-      planNum : [9,8,7,6,5,4,3]
     }
     function createUserProfile(){
       var navUserInfo = document.querySelector(".navUserInfo")
@@ -223,55 +222,46 @@
       var monthValue = monthCell.value
       window.location.href = "../action/currentMonthUpdateAction.jsp?currentMonth=" + monthValue;
     }
-    function calendar(){
-      var main = document.querySelector(".main")
-      main.innerHTML = ""
-      var amountBox = 35;
+    function calendar() {
+        var main = document.querySelector(".main")
+        var amountBox = 35;
 
-      var main = document.querySelector(".main")
-      var totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-      
-      for(var i = 1; i <= amountBox; i++){
-        var calendarCell = document.createElement("div")
-        var calendarCellText = document.createElement("p")
-        var cellNum = document.createElement("p")
-        var planTitle = document.createElement("p")
-        cellNum.className = "cellTitle"
-        cellNum.id = "cellNum"
-        planTitle.className = "planTitle"
-        calendarCell.onclick = schedulerDetailOpenEvent
+        var totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-        if(currentYear === user.yearNum && currentMonth === user.monthNum){
-          if(user.dayNum.includes(i)){
-            var index = user.dayNum.indexOf(i)
-            var planNumber = user.planNum[index]
-            if(planNumber >= 100){
-              planTitle.textContent = "99+";
-              
-            }else{
-              planTitle.textContent = planNumber;
-              
+        for (var i = 1; i <= amountBox; i++) {
+            var calendarCell = document.createElement("div")
+            var calendarCellText = document.createElement("p")
+            var cellNum = document.createElement("p")
+            var planTitle = document.createElement("p")
+            cellNum.className = "cellTitle"
+            cellNum.id = "cellNum"
+            planTitle.className = "planTitle"
+            calendarCell.onclick = schedulerDetailOpenEvent
+
+            if (userProfile.planDayList.includes(i)) {
+            var index = userProfile.planDayList.indexOf(i)
+            var planNumber = userProfile.planDayList[index]
+            var planCount = userProfile.planDayList.filter(num => num === i).length;
+
+            if (planNumber >= 100) {
+                planTitle.textContent = "99+"
+            } else {
+                planTitle.textContent = planCount;
             }
             cellNum.textContent = i
-          }
-          else if(i <= totalDaysInMonth){
-            cellNum.textContent = i;
-          }else{
+            } else if (i <= totalDaysInMonth) {
+            cellNum.textContent = i
+            } else {
             cellNum.textContent = ""
-          }
+            }
+
+            calendarCell.appendChild(cellNum)
+            calendarCell.className = "cell"
+            calendarCell.appendChild(planTitle)
+            main.appendChild(calendarCell)
         }
-        else if(i <= totalDaysInMonth){
-          cellNum.textContent = i
-          ;
-        }else{
-          cellNum.textContent = ""
-        }
-        calendarCell.appendChild(cellNum);
-        calendarCell.className = "cell"
-        calendarCell.appendChild(planTitle);
-        main.appendChild(calendarCell);
-      }
     }
+
   
   function schedulerDetailOpenEvent(e){
     var cellNum = e.currentTarget.querySelector("#cellNum").textContent

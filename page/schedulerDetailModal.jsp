@@ -72,8 +72,8 @@
       <section class="setTimeSection">
         <div class="setStartTime">
           <p class="setStartTimeText">시작</p>
-          <select class="selectStartHour" name="startHour"></select>
-          <select class="selectStartMin" name="startMin"></select>
+          <select id="selectStartHour" class="selectStartHour" name="startHour"></select>
+          <select id="selectStartMin" class="selectStartMin" name="startMin"></select>
         </div>
         <div class="setEndTime">
           <p class="setEndTimeText">종료</p>
@@ -110,55 +110,120 @@
       endMin:endMinList,
       content:contentList
     }
-    console.log(userPlan)
 
+    function createTable(planTr, planTitle, startTime, endTime, userPlan, i) {
+      var startHour = userPlan.startHour[i].toString().padStart(2, "0");
+      var startMin = userPlan.startMin[i].toString().padStart(2, "0");
+      var endHour = userPlan.endHour[i].toString().padStart(2, "0");
+      var endMin = userPlan.endMin[i].toString().padStart(2, "0");
 
+      planTitle.textContent = userPlan.content[i];
+      startTime.textContent = startHour + ":" + startMin;
+      endTime.textContent = endHour + ":" + endMin;
 
-    function createSetTime() {
+      planTr.appendChild(planTitle);
+      planTr.appendChild(startTime);
+      planTr.appendChild(endTime);
+    }
+
+    function createHourTime(startHour,endHour){
       var hour = 24;
-      var min = 60;
-      var selectStartHour = document.querySelector(".selectStartHour")
-      var selectEndHour = document.querySelector(".selectEndHour")
-
-      var selectStartMin = document.querySelector(".selectStartMin")
-      var selectEndMin = document.querySelector(".selectEndMin")
-
-      for (var i = 0; i < hour; i++) {
+      for(var i = 0; i < hour; i++){
         var optionStartHour = document.createElement("option")
         var optionEndHour = document.createElement("option")
         optionStartHour.textContent = i
         optionEndHour.textContent = i
         optionStartHour.value = i
         optionEndHour.value = i
-        selectStartHour.appendChild(optionStartHour)
-        selectEndHour.appendChild(optionEndHour)
-      }
-
-      for (var j = 0; j < min; j++) {
-        var optionStartMin = document.createElement("option")
-        var optionEndMin = document.createElement("option")
-        optionStartMin.textContent = j
-        optionEndMin.textContent = j
-        optionStartMin.value = j
-        optionEndMin.value = j
-        selectStartMin.appendChild(optionStartMin)
-        selectEndMin.appendChild(optionEndMin)
+        startHour.appendChild(optionStartHour)
+        endHour.appendChild(optionEndHour)
       }
     }
+
+    function createMinTime(startMin,endMin){
+      var min = 60;
+      for(var i = 0; i < min; i++){
+        var optionStartMin = document.createElement("option")
+        var optionEndMin = document.createElement("option")
+        optionStartMin.textContent = i
+        optionEndMin.textContent = i
+        optionStartMin.value = i
+        optionEndMin.value = i
+        startMin.appendChild(optionStartMin)
+        endMin.appendChild(optionEndMin)
+      }
+    }
+
+
+
+
    
     function receiveUserPlan(userPlan) {
       var dayNum = document.querySelector(".dayNum")
       var planSection = document.querySelector(".planSection")
       dayNum.textContent = userPlan.day
+
       for (var i = 0; i < userPlan.idx.length; i++) {
         var planTable = document.createElement("table")
         var planTr = document.createElement("tr")
+        
         var planTitle = document.createElement("td")
         var startTime = document.createElement("td")
         var endTime = document.createElement("td")
         var editBtn = document.createElement("input")
+        var editSaveBtn = document.createElement("input")
         var deleteBtn = document.createElement("input")
         var deleteInput = document.createElement("input")
+
+
+        var editInput = document.createElement("input")
+        var editStartHour = document.createElement("select")
+        var editStartMin = document.createElement("select")
+        var editEndHour = document.createElement("select")
+        var editEndMin = document.createElement("select")
+
+        var planEditSection = document.createElement("div")
+        var planEditInput = document.createElement("input")
+
+        var planEditStartHour = document.createElement("select")
+        var planEditStartMin = document.createElement("select")
+        var planEditEndHour = document.createElement("select")
+        var planEditEndMin = document.createElement("select")
+
+
+
+        createTable(planTr,planTitle,startTime,endTime,userPlan,i)
+        planTable.appendChild(planTr)
+
+
+
+        planEditSection.id = "planEditSection"
+        planEditSection.className = "planEditSection"
+
+        planEditStartHour.id = "planEditStartHour"
+        planEditStartHour.name = "planEditStartHour"
+
+        planEditStartMin.id = "planEditStartMin"
+        planEditStartMin.name = "planEditStartMin"
+
+        planEditEndHour.id = "planEditEndHour"
+        planEditEndHour.name = "planEditEndHour"
+
+        planEditEndMin.id = "planEditEndMin"
+        planEditEndMin.name = "planEditEndMin"
+
+        planEditInput.type = "text"
+        planEditInput.name = "planEditInput"
+        planEditInput.className = "planEditInput"
+        planEditInput.id = "planEditInput"
+        planEditInput.value = userPlan.content[i]
+
+
+        
+        editInput.type = "text"
+        editInput.id = "editInput"
+        editInput.value = userPlan.content[i]
+ 
 
         deleteInput.type = "hidden"
         deleteInput.value = userPlan.idx[i]
@@ -168,8 +233,16 @@
         planTr.className = "planTr"
 
         editBtn.value = "수정"
-        editBtn.type = "submit"
+        editBtn.type = "button"
         editBtn.className = "btnStyle"
+        editBtn.id = "editBtn"
+        editBtn.onclick = editBtnEvent
+
+        editSaveBtn.value = "저장"
+        editSaveBtn.type = "hidden"
+        editSaveBtn.className = "btnStyle"
+        editSaveBtn.id = "editSaveBtn"
+
         deleteBtn.value = "삭제"
         deleteBtn.type = "submit"
         deleteBtn.onclick = deleteBtnEvent
@@ -178,23 +251,24 @@
         planTitle.textContent = userPlan.content[i]
         planTitle.className = "planTitle"
         
-        var startHour = userPlan.startHour[i].toString().padStart(2, "0")
-        var startMin = userPlan.startMin[i].toString().padStart(2, "0")
-        var endHour = userPlan.endHour[i].toString().padStart(2, "0")
-        var endMin = userPlan.endMin[i].toString().padStart(2, "0")
-        
-        startTime.textContent = startHour + ":" + startMin
-        startTime.className = "startTime";
-        endTime.textContent = endHour + ":" + endMin
-        endTime.className = "endTime";
+        createHourTime(planEditStartHour,planEditEndHour)
+        planEditStartHour.value = userPlan.startHour[i]
+        planEditEndHour.value = userPlan.endHour[i]
+        createMinTime(planEditStartMin,planEditEndMin)
+        planEditStartMin.value = userPlan.startMin[i]
+        planEditEndMin.value = userPlan.endMin[i]
 
-        planTable.appendChild(planTr)
+        planEditSection.appendChild(planEditInput)
+        planEditSection.appendChild(planEditStartHour)
+        planEditSection.appendChild(planEditStartMin)
+        planEditSection.appendChild(planEditEndHour)
+        planEditSection.appendChild(planEditEndMin)
 
-        planTr.appendChild(planTitle)
-        planTr.appendChild(startTime)
-        planTr.appendChild(endTime)
+        planTable.appendChild(planEditSection)
 
         planTable.appendChild(editBtn)
+        planTable.appendChild(editSaveBtn)
+
         planTable.appendChild(deleteBtn)
         planTable.appendChild(deleteInput)
 
@@ -202,6 +276,17 @@
       }
     }
 
+
+
+    function createInputSetTime() {
+      var selectStartHour = document.querySelector(".selectStartHour")
+      var selectEndHour = document.querySelector(".selectEndHour")
+      createHourTime(selectStartHour,selectEndHour)
+
+      var selectStartMin = document.querySelector(".selectStartMin")
+      var selectEndMin = document.querySelector(".selectEndMin")
+      createMinTime(selectStartMin,selectEndMin)
+    }
 
     function addPlanValidationEvent(e) {
       e.preventDefault();
@@ -213,16 +298,42 @@
         form.submit();
       }
     }
-    window.onload = function(){
-      createSetTime();
-      receiveUserPlan(userPlan)
-    }
 
     function deleteBtnEvent(e){
       var planForm = document.querySelector("#planForm")
       e.preventDefault()
       planForm.action = "../action/deletePlanAction.jsp"
       planForm.submit()
+    }
+
+    function editBtnEvent(e){
+      var planTable = e.target.parentElement
+      var planTr = planTable.querySelector(".planTr")
+      var planEditSection = planTable.querySelector("#planEditSection")
+      var editBtn = planTable.querySelector("#editBtn")
+      var editSaveBtn = planTable.querySelector("#editSaveBtn")
+
+      planTr.style.display = "none"
+      planEditSection.style.display = "flex"
+      editBtn.type = "hidden"
+      editSaveBtn.type = "submit"
+
+      editSaveBtn.onclick = editSaveBtnEvent
+    }
+    function editSaveBtnEvent(e){
+      e.preventDefault()
+      var planTable = e.target.parentElement
+      var editInput = planTable.querySelector("#planEditInput").value
+      if(contentValidationEvent(editInput)){
+        var planForm = document.querySelector("#planForm")
+      planForm.action = "../action/editPlanAction.jsp"
+      planForm.submit()
+      }
+    }
+
+    window.onload = function(){
+      createInputSetTime()
+      receiveUserPlan(userPlan)
     }
   </script>
   <script src="../javascript/validation.js"></script>
