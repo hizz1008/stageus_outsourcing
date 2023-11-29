@@ -15,18 +15,22 @@
   int department = -1;
   int position = -1;
 
-  String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
-  PreparedStatement query = connect.prepareStatement(sql);
-  query.setInt(1, idx);
-
-  ResultSet result = query.executeQuery();
-  if (result.next()) {
-    name = result.getString("name");
-    tel = result.getString("tel");
-    department = result.getInt("department");
-    position = result.getInt("position");
-  }else{
+  if(idx == null){
     response.sendRedirect("../index.jsp");
+  }else{
+    String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
+    PreparedStatement query = connect.prepareStatement(sql);
+    query.setInt(1, idx);
+  
+    ResultSet result = query.executeQuery();
+    if (result.next()) {
+      name = result.getString("name");
+      tel = result.getString("tel");
+      department = result.getInt("department");
+      position = result.getInt("position");
+    }else{
+      response.sendRedirect("../index.jsp");
+    }
   }
 %>
 <head>

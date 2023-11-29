@@ -17,18 +17,34 @@
   int department = -1;
   int position = -1;
 
-  String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
-  PreparedStatement query = connect.prepareStatement(sql);
-  query.setInt(1, idx);
+  if(idx == null){
+    response.sendRedirect("../index.jsp");
+  }
+  else{
+    String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
+    PreparedStatement query = connect.prepareStatement(sql);
+    query.setInt(1, idx);
+  
+    ResultSet result = query.executeQuery();
+    if (result.next()) {
+      name = result.getString("name");
+      tel = result.getString("tel");
+      department = result.getInt("department");
+      position = result.getInt("position");
+    }else{
+      response.sendRedirect("../.jsp");
+    }
 
-  ResultSet result = query.executeQuery();
-  if (result.next()) {
-    name = result.getString("name");
-    tel = result.getString("tel");
-    department = result.getInt("department");
-    position = result.getInt("position");
-  }else{
-    response.sendRedirect("./loginPage.jsp");
+    String getPlanNumSql = "SELECT idx FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
+    PreparedStatement getPlanNumQuery = connect.prepareStatement(getPlanNumSql);
+    getPlanNumQuery.setInt(1,idx);
+    getPlanNumQuery.setInt(2,currentYear);
+    getPlanNumQuery.setInt(3,currentMonth);
+    
+    ResultSet getPlanNumResult = getPlanNumQuery.executeQuery();
+    
+
+
   }
 %>
 <head>
@@ -80,12 +96,6 @@
       monthNum : 11,
       dayNum : [1,2,3,4,5,6,7],
       planNum : [9,8,7,6,5,4,3]
-    }
-    var userPlan = {
-      title : ["밥 먹기", "빨래하기"],
-      startTime : ["11:00", "13:00"],
-      endTime : ["12:00", "14:00"],
-      dayNum : 3
     }
     function createUserProfile(){
       var navUserInfo = document.querySelector(".navUserInfo")
@@ -227,8 +237,9 @@
         var cellNum = document.createElement("p")
         var planTitle = document.createElement("p")
         cellNum.className = "cellTitle"
+        cellNum.id = "cellNum"
         planTitle.className = "planTitle"
-        planTitle.onclick = scheduleOpenEvent
+        calendarCell.onclick = schedulerDetailOpenEvent
 
         if(currentYear === user.yearNum && currentMonth === user.monthNum){
           if(user.dayNum.includes(i)){
@@ -236,10 +247,10 @@
             var planNumber = user.planNum[index]
             if(planNumber >= 100){
               planTitle.textContent = "99+";
-              calendarCell.appendChild(planTitle);
+              
             }else{
               planTitle.textContent = planNumber;
-              calendarCell.appendChild(planTitle);
+              
             }
             cellNum.textContent = i
           }
@@ -250,21 +261,26 @@
           }
         }
         else if(i <= totalDaysInMonth){
-          cellNum.textContent = i;
+          cellNum.textContent = i
+          ;
         }else{
           cellNum.textContent = ""
         }
-        calendarCell.className = "cell"
         calendarCell.appendChild(cellNum);
+        calendarCell.className = "cell"
+        calendarCell.appendChild(planTitle);
         main.appendChild(calendarCell);
       }
     }
   
-  function scheduleOpenEvent(){
-    var childWindow = window.open("./schedulerDetailModal.jsp", "_blank", "width=700,height=800");
-    childWindow.onload = ()=>{
-      childWindow.receiveUserPlan(userPlan);
-    }
+  function schedulerDetailOpenEvent(e){
+    var cellNum = e.currentTarget.querySelector("#cellNum").textContent
+
+    var childWindow = window.open("./schedulerDetailModal.jsp?year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+
+    // childWindow.onload = ()=>{
+    //   childWindow.receiveUserPlan(userPlan);
+    // }
   }
 
 

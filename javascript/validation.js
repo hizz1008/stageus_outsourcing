@@ -26,9 +26,8 @@ function koreanValidationEvent(input){
 }
 
 //문자, 숫자 가능 유효성 검사 이벤트로 이름 수정
-function ValidationEvent(input){
-  var regex = /^[0-9a-zA-Z\uAC00-\uD7A3]+$/;
-
+function contentValidationEvent(input){
+  var regex = /^[0-9a-zA-Z\uAC00-\uD7A3^\s]+$/;
   if(!regex.test(input)){
     alert("올바른 형식의 내용을 입력해주세요")
     return false
@@ -48,16 +47,4 @@ function passwordAlert(){
 }
 function nameAlert(){
   alert("올바른 이름을 입력해주세요")
-}
-
-
-
-function addPlanValidationEvent(e){
-  e.preventDefault()
-  var addPlanInput = document.querySelector(".addPlanInput")
-  var inputSection = document.querySelector(".inputSection")
-  if(ValidationEvent(addPlanInput)){
-    inputSection.submit()
-  }
-
 }

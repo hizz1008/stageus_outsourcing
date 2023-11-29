@@ -1,11 +1,11 @@
-#headerbars{
+#headerbars {
   font-size: 20px;
   color: white;
   margin-right: 20%;
   cursor: pointer;
 }
 
-.header{
+.header {
   box-sizing: border-box;
   position: fixed;
   top: 0;
@@ -14,36 +14,39 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #4285F4;
+  background-color: #4285f4;
   padding: 10px 2%;
 }
-.left,.center,.right{
+.left,
+.center,
+.right {
   display: flex;
   align-items: center;
   color: white;
 }
 
-.headerLogo{
+.headerLogo {
   font-size: 30px;
   color: white;
   margin-right: 5%;
 }
-.yearText{
+.yearText {
   font-size: 30px;
   margin: 0 10px;
 }
-#leftBtn, #rightBtn{
+#leftBtn,
+#rightBtn {
   font-size: 30px;
   cursor: pointer;
 }
-.monthList{
+.monthList {
   font-size: 25px;
   color: white;
 }
-.selectedMonth{
+.selectedMonth {
   background-color: rgba(255, 255, 255, 0.5);
 }
-.month{
+.month {
   width: 40px;
   height: 40px;
 
@@ -55,36 +58,38 @@
   cursor: pointer;
   text-align: center;
 }
-.userName{
-  width: 80px;
+.userName {
+  width: 100%;
   font-size: 20px;
   margin-right: 10%;
   cursor: pointer;
   color: white;
+  white-space: nowrap;
 }
-.logoutBtn{
-  width: 80px;
+.logoutBtn {
+  width: 100%;
   font-size: 20px;
-  
+
+  white-space: nowrap;
+
   color: white;
   background-color: inherit;
-  
+
   border: none;
   cursor: pointer;
 }
-.main{
+.main {
   box-sizing: border-box;
   padding-top: 56px;
   width: 100%;
   height: 100%;
 
-  
   display: grid;
 
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(5, 1fr);
 }
-.cell{
+.cell {
   position: relative;
 
   display: flex;
@@ -94,11 +99,11 @@
   padding-top: 10px;
   border: 1px solid #595959;
 }
-.cellTitle{
+.cellTitle {
   position: absolute;
   top: 10px;
 }
-.planTitle{
+.planTitle {
   width: 100%;
   height: 100%;
 
@@ -110,11 +115,10 @@
   cursor: pointer;
 }
 
-
-.nav{
+.nav {
   z-index: 1;
   position: fixed;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   box-sizing: border-box;
   width: 30%;
   height: 100%;
@@ -122,9 +126,9 @@
   left: -100%;
   padding: 3%;
 
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
-.blackBackground{
+.blackBackground {
   display: none;
   width: 100%;
   height: 100%;
@@ -133,28 +137,28 @@
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-.navHeader{
+.navHeader {
   position: relative;
   margin-bottom: 20%;
 }
-.navUserInfo{
+.navUserInfo {
   font-size: 25px;
-  color: #4285F4;
+  color: #4285f4;
   margin-bottom: 10px;
 }
-.navUserName{
+.navUserName {
   font-size: 20px;
   color: black;
 }
-.otherUserDepartment{
+.otherUserDepartment {
   font-size: 25px;
-  color: #4285F4;
+  color: #4285f4;
   margin-bottom: 10px;
 }
-.otherUserNames{
+.otherUserNames {
   font-size: 20px;
 }
-.closeNavBtn{
+.closeNavBtn {
   position: absolute;
   top: 0;
   right: 0;
