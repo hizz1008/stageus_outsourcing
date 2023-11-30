@@ -88,7 +88,7 @@
         <input class="addPlanInput" type="text" name="content" />
         <input
           class="addPlanBtn btnStyle"
-          type="submit"
+          type="button"
           value="등록"
           onclick="addPlanValidationEvent(event)"
         />
@@ -296,8 +296,7 @@
       createMinTime(selectStartMin,selectEndMin)
     }
 
-    function addPlanValidationEvent(e) {
-      e.preventDefault();
+    function addPlanValidationEvent() {
       var addPlanInput = document.querySelector(".addPlanInput").value;
 
       var form = document.querySelector("#form");
@@ -307,8 +306,8 @@
       var startMinValue = parseInt(document.querySelector(".selectStartMin").value);
       var selectEndMin = parseInt(document.querySelector(".selectEndMin").value);
 
-      if(timeValidationEvent(startHourValue,selectEndHour,startMinValue,selectEndMin)){
-        if (contentValidationEvent(addPlanInput)) {
+      if(timeValidation(startHourValue,selectEndHour,startMinValue,selectEndMin)){
+        if (contentValidation(addPlanInput)) {
           form.action = "../action/createPlanAction.jsp?";
           form.submit();
         }
@@ -346,8 +345,8 @@
       var planEditEndHour = parseInt(document.querySelector("#planEditEndHour").value);
       var planEditEndMin = parseInt(document.querySelector("#planEditEndMin").value);
   
-      if(timeValidationEvent(planEditStartHour,planEditEndHour,planEditStartMin,planEditEndMin)){
-        if(contentValidationEvent(editInput)){
+      if(timeValidation(planEditStartHour,planEditEndHour,planEditStartMin,planEditEndMin)){
+        if(contentValidation(editInput)){
         var planForm = document.querySelector("#planForm")
         planForm.action = "../action/editPlanAction.jsp"
         planForm.submit()
