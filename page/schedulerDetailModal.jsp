@@ -7,13 +7,15 @@
 <%@ page import="java.util.ArrayList"%>
 <%
     Integer idx = (Integer)session.getAttribute("loggedInSession");
-    Integer currentYear = (Integer)session.getAttribute("currentYear");
-    Integer currentMonth = (Integer)session.getAttribute("currentMonth");
-    int year = Integer.parseInt(request.getParameter("year"));
-    int month = Integer.parseInt(request.getParameter("month"));
+    Integer year = (Integer)session.getAttribute("currentYear");
+    Integer month = (Integer)session.getAttribute("currentMonth");
+    
+    //int year = Integer.parseInt(request.getParameter("year"));
+    //int month = Integer.parseInt(request.getParameter("month"));
     int day = Integer.parseInt(request.getParameter("day"));
-    session.setAttribute("currentYear", year);
-    session.setAttribute("currentMonth", month);
+
+    //session.setAttribute("currentYear", year);
+    //session.setAttribute("currentMonth", month);
     session.setAttribute("currentDay", day);
 
     ArrayList<Integer> planIdxList = new ArrayList<Integer>();
@@ -60,15 +62,16 @@
   />
   <title>Schedule Details Page</title>
 </head>
+<article></article>
 <body>
   <header id="header" class="headerStyle">
     <h1 class="dayNum"></h1>
   </header>
   <main class="mainStyle">
     
-    <form class="planSection" id="planForm"></form>
+    <section class="planSection" id="planForm"></section>
 
-    <form class="inputSection" id="form">
+    <form class="addPlanForm" id="form">
       <section class="setTimeSection">
         <div class="setStartTime">
           <p class="setStartTimeText">시작</p>
@@ -111,7 +114,7 @@
       content:contentList
     }
 
-    function createTable(planTr, planTitle, startTime, endTime, userPlan, i) {
+    function createPlan(planDiv, planTitle, startTime, endTime, userPlan, i) {
       var startHour = userPlan.startHour[i].toString().padStart(2, "0");
       var startMin = userPlan.startMin[i].toString().padStart(2, "0");
       var endHour = userPlan.endHour[i].toString().padStart(2, "0");
@@ -121,9 +124,9 @@
       startTime.textContent = startHour + ":" + startMin;
       endTime.textContent = endHour + ":" + endMin;
 
-      planTr.appendChild(planTitle);
-      planTr.appendChild(startTime);
-      planTr.appendChild(endTime);
+      planDiv.appendChild(planTitle);
+      planDiv.appendChild(startTime);
+      planDiv.appendChild(endTime);
     }
 
     function createHourTime(startHour,endHour){
@@ -158,99 +161,101 @@
 
 
    
-    function receiveUserPlan(userPlan) {
+    function getPlan(userPlan) {
       var dayNum = document.querySelector(".dayNum")
       var planSection = document.querySelector(".planSection")
       dayNum.textContent = userPlan.day
 
       for (var i = 0; i < userPlan.idx.length; i++) {
-        var planTable = document.createElement("table")
-        var planTr = document.createElement("tr")
+        var planArticle = document.createElement("article")
+
+        var planDiv = document.createElement("div")
+        planArticle.className = "planArticle"
+        planDiv.className = "planDiv"
+        planDiv.id = "planDiv"
         
-        var planTitle = document.createElement("td")
-        var startTime = document.createElement("td")
-        var endTime = document.createElement("td")
+        var planTitle = document.createElement("p")
+        planTitle.textContent = userPlan.content[i]
+        planTitle.className = "planTitle"
+
+        var startTime = document.createElement("p")
+        startTime.className = "startTime"
+
+        var endTime = document.createElement("p")
+        endTime.className = "endTime"
+        
+        var planEditBtnDiv = document.createElement("div")
+        planEditBtnDiv.className = "planEditBtnDiv"
+
+
         var editBtn = document.createElement("input")
-        var editSaveBtn = document.createElement("input")
-        var deleteBtn = document.createElement("input")
-        var deleteInput = document.createElement("input")
-
-
-        var editInput = document.createElement("input")
-        var editStartHour = document.createElement("select")
-        var editStartMin = document.createElement("select")
-        var editEndHour = document.createElement("select")
-        var editEndMin = document.createElement("select")
-
-        var planEditSection = document.createElement("div")
-        var planEditInput = document.createElement("input")
-
-        var planEditStartHour = document.createElement("select")
-        var planEditStartMin = document.createElement("select")
-        var planEditEndHour = document.createElement("select")
-        var planEditEndMin = document.createElement("select")
-
-
-
-        createTable(planTr,planTitle,startTime,endTime,userPlan,i)
-        planTable.appendChild(planTr)
-
-
-
-        planEditSection.id = "planEditSection"
-        planEditSection.className = "planEditSection"
-
-        planEditStartHour.id = "planEditStartHour"
-        planEditStartHour.name = "planEditStartHour"
-
-        planEditStartMin.id = "planEditStartMin"
-        planEditStartMin.name = "planEditStartMin"
-
-        planEditEndHour.id = "planEditEndHour"
-        planEditEndHour.name = "planEditEndHour"
-
-        planEditEndMin.id = "planEditEndMin"
-        planEditEndMin.name = "planEditEndMin"
-
-        planEditInput.type = "text"
-        planEditInput.name = "planEditInput"
-        planEditInput.className = "planEditInput"
-        planEditInput.id = "planEditInput"
-        planEditInput.value = userPlan.content[i]
-
-
-        
-        editInput.type = "text"
-        editInput.id = "editInput"
-        editInput.value = userPlan.content[i]
- 
-
-        deleteInput.type = "hidden"
-        deleteInput.value = userPlan.idx[i]
-        deleteInput.name = "deleteIdx"
-
-        planTable.className = "planTable"
-        planTr.className = "planTr"
-
         editBtn.value = "수정"
         editBtn.type = "button"
         editBtn.className = "btnStyle"
         editBtn.id = "editBtn"
         editBtn.onclick = editBtnEvent
 
+
+        var editSaveBtn = document.createElement("input")
         editSaveBtn.value = "저장"
         editSaveBtn.type = "hidden"
         editSaveBtn.className = "btnStyle"
         editSaveBtn.id = "editSaveBtn"
 
+        var deleteBtn = document.createElement("input")
         deleteBtn.value = "삭제"
         deleteBtn.type = "submit"
         deleteBtn.onclick = deleteBtnEvent
         deleteBtn.className = "btnStyle"
 
-        planTitle.textContent = userPlan.content[i]
-        planTitle.className = "planTitle"
-        
+        var deleteInput = document.createElement("input")
+        deleteInput.type = "hidden"
+        deleteInput.value = userPlan.idx[i]
+        deleteInput.name = "deleteIdx"
+
+
+        var editInput = document.createElement("input")
+        editInput.type = "text"
+        editInput.id = "editInput"
+        editInput.value = userPlan.content[i]
+
+        var editStartHour = document.createElement("select")
+        var editStartMin = document.createElement("select")
+        var editEndHour = document.createElement("select")
+        var editEndMin = document.createElement("select")
+
+        var planEditSection = document.createElement("div")
+        planEditSection.id = "planEditSection"
+        planEditSection.className = "planEditSection"
+
+        var planEditInput = document.createElement("input")
+        planEditInput.type = "text"
+        planEditInput.name = "planEditInput"
+        planEditInput.className = "planEditInput"
+        planEditInput.id = "planEditInput"
+        planEditInput.value = userPlan.content[i]
+
+        var planEditStartHour = document.createElement("select")
+        planEditStartHour.id = "planEditStartHour"
+        planEditStartHour.name = "planEditStartHour"
+
+        var planEditStartMin = document.createElement("select")
+        planEditStartMin.id = "planEditStartMin"
+        planEditStartMin.name = "planEditStartMin"
+
+        var planEditEndHour = document.createElement("select")
+        planEditEndHour.id = "planEditEndHour"
+        planEditEndHour.name = "planEditEndHour"
+
+        var planEditEndMin = document.createElement("select")
+        planEditEndMin.id = "planEditEndMin"
+        planEditEndMin.name = "planEditEndMin"
+
+
+
+
+        createPlan(planDiv,planTitle,startTime,endTime,userPlan,i)
+
         createHourTime(planEditStartHour,planEditEndHour)
         planEditStartHour.value = userPlan.startHour[i]
         planEditEndHour.value = userPlan.endHour[i]
@@ -258,21 +263,24 @@
         planEditStartMin.value = userPlan.startMin[i]
         planEditEndMin.value = userPlan.endMin[i]
 
+        planArticle.appendChild(planDiv)
+
         planEditSection.appendChild(planEditInput)
         planEditSection.appendChild(planEditStartHour)
         planEditSection.appendChild(planEditStartMin)
         planEditSection.appendChild(planEditEndHour)
         planEditSection.appendChild(planEditEndMin)
 
-        planTable.appendChild(planEditSection)
+        planArticle.appendChild(planEditSection)
+        planArticle.appendChild(planEditBtnDiv)
 
-        planTable.appendChild(editBtn)
-        planTable.appendChild(editSaveBtn)
+        planEditBtnDiv.appendChild(editBtn)
+        planEditBtnDiv.appendChild(editSaveBtn)
 
-        planTable.appendChild(deleteBtn)
-        planTable.appendChild(deleteInput)
-
-        planSection.appendChild(planTable)
+        planEditBtnDiv.appendChild(deleteBtn)
+        planEditBtnDiv.appendChild(deleteInput)
+        
+        planSection.appendChild(planArticle)
       }
     }
 
@@ -293,9 +301,17 @@
       var addPlanInput = document.querySelector(".addPlanInput").value;
 
       var form = document.querySelector("#form");
-      if (contentValidationEvent(addPlanInput)) {
-        form.action = "../action/createPlanAction.jsp?";
-        form.submit();
+
+      var startHourValue = parseInt(document.querySelector(".selectStartHour").value);
+      var selectEndHour = parseInt(document.querySelector(".selectEndHour").value);
+      var startMinValue = parseInt(document.querySelector(".selectStartMin").value);
+      var selectEndMin = parseInt(document.querySelector(".selectEndMin").value);
+
+      if(timeValidationEvent(startHourValue,selectEndHour,startMinValue,selectEndMin)){
+        if (contentValidationEvent(addPlanInput)) {
+          form.action = "../action/createPlanAction.jsp?";
+          form.submit();
+        }
       }
     }
 
@@ -307,34 +323,44 @@
     }
 
     function editBtnEvent(e){
-      var planTable = e.target.parentElement
-      var planTr = planTable.querySelector(".planTr")
-      var planEditSection = planTable.querySelector("#planEditSection")
-      var editBtn = planTable.querySelector("#editBtn")
-      var editSaveBtn = planTable.querySelector("#editSaveBtn")
+      var planArticle = e.target.parentElement
+      var planDiv = planArticle.querySelector("#planDiv")
+      var planEditSection = planArticle.querySelector("#planEditSection")
+      var editBtn = planArticle.querySelector("#editBtn")
+      var editSaveBtn = planArticle.querySelector("#editSaveBtn")
 
-      planTr.style.display = "none"
+      planDiv.style.display = "none"
       planEditSection.style.display = "flex"
       editBtn.type = "hidden"
       editSaveBtn.type = "submit"
 
       editSaveBtn.onclick = editSaveBtnEvent
     }
+
     function editSaveBtnEvent(e){
       e.preventDefault()
-      var planTable = e.target.parentElement
-      var editInput = planTable.querySelector("#planEditInput").value
-      if(contentValidationEvent(editInput)){
+      var planArticle = e.target.parentElement
+      var editInput = planArticle.querySelector("#planEditInput").value
+      var planEditStartHour = parseInt(document.querySelector("#planEditStartHour").value);
+      var planEditStartMin = parseInt(document.querySelector("#planEditStartMin").value);
+      var planEditEndHour = parseInt(document.querySelector("#planEditEndHour").value);
+      var planEditEndMin = parseInt(document.querySelector("#planEditEndMin").value);
+  
+      if(timeValidationEvent(planEditStartHour,planEditEndHour,planEditStartMin,planEditEndMin)){
+        if(contentValidationEvent(editInput)){
         var planForm = document.querySelector("#planForm")
-      planForm.action = "../action/editPlanAction.jsp"
-      planForm.submit()
+        planForm.action = "../action/editPlanAction.jsp"
+        planForm.submit()
+        }
       }
     }
 
     window.onload = function(){
       createInputSetTime()
-      receiveUserPlan(userPlan)
+      getPlan(userPlan)
     }
+
+    //  이벤트함수와 생성함수 분리
   </script>
   <script src="../javascript/validation.js"></script>
 </body>

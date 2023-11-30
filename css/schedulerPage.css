@@ -150,12 +150,12 @@
   font-size: 20px;
   color: black;
 }
-.otherUserDepartment {
+.teamMemberDepartment {
   font-size: 25px;
   color: #4285f4;
   margin-bottom: 10px;
 }
-.otherUserNames {
+.teamMemberNames {
   font-size: 20px;
 }
 .closeNavBtn {

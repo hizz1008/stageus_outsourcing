@@ -45,8 +45,10 @@
         <option value="2">팀원</option>
       </select>
       
-      <input class="btnStyle BGcolorgreen" type="submit" value="회원가입" onclick="signUpValidationEvent(event)"></input>
-      
+      <input class="btnStyle BGcolorgreen" type="button" value="회원가입" onclick="signUpValidationEvent(event)"></input>
+      <!-- Sumit의 정의에 대해 찾아보기-->
+
+
     </form>
    </section>
   </main>
@@ -86,8 +88,8 @@
     }
   }
 
-  function signUpValidationEvent(e){
-    e.preventDefault()
+  function signUpValidationEvent(){
+    // e.preventDefault()
     var signUpForm = document.querySelector("#form")
     var idInput = document.querySelector("#idInput")
     var idDuplicationInput = document.querySelector("#idDuplicationInput")

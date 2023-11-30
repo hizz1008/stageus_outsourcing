@@ -6,34 +6,76 @@
   align-items: center;
   border-bottom: 1px solid var(--color-black);
 }
+
 .mainStyle{
   width: 100%;
-  height: 90%;
+  height: 95%;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
 .planSection{
-  width: 40%;
-  margin-bottom: 40px;
-}
-.planTable{
+  width: 100%;
+  height: 80%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+
+  overflow: auto;
+}
+
+.planArticle{
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+
+
 }
-.planTr{
-  width: 100%;
+/* 섹션 나누기, */
+
+.planDiv{
+  display: flex;
+  justify-content: space-between;
+
+  width: 50%;
 }
 .planEditSection{
   display: none;
+  align-items: center;
 }
-.inputSection{
+.planEditBtnDiv{
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+}
+.planEditInput{
+  width: 150px;
+  padding: 10px;
+  border: 1px solid var(--color-e);
+  color: var(--color-black);
+}
+.planTitle{
+  display: flex;
+  align-items: center;
+  width: 33.3%;
+}
+.startTime{
+  display: flex;
+  align-items: center;
+  width: 33.3%;
+}
+.endTime{
+  display: flex;
+  align-items: center;
+  width: 33.3%;
+}
+.addPlanForm{
   width: 100%;
 
-  position: fixed;
   padding: 3% 0;
   bottom: 0;
 
@@ -65,7 +107,7 @@
   color: var(--color-black);
 }
 .btnStyle{
-  width: 20%;
+  width: 50px;
   height: 40px;
 
   display: flex;

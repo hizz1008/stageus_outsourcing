@@ -18,16 +18,36 @@
   int department = -1;
   int position = -1;
 
+  int teamPosition = 2;
+
+  int memberIdx = -1;
+  String memberName = "";
+
+
+
+
   ArrayList<Integer> planDayList = new ArrayList<Integer>();
+
+  ArrayList<Integer> teamMemberIdxList = new ArrayList<Integer>();
+  ArrayList<String> nameList = new ArrayList<String>();
+  ArrayList<Integer> departmentList = new ArrayList<Integer>();
+  ArrayList<Integer> positionList = new ArrayList<Integer>();
+
+  ArrayList<String>[] teamMemberList = new ArrayList[3];
+  for(int i=0; i<3; i++){
+    teamMemberList[i] = new ArrayList<String>();
+  }
+
+
 
   if(idx == null){
     response.sendRedirect("../index.jsp");
   }
   else{
     String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
+    // 로그인에서 세션으로 해당 정보 저장 가능
     PreparedStatement query = connect.prepareStatement(sql);
     query.setInt(1, idx);
-  
     ResultSet result = query.executeQuery();
     if (result.next()) {
       name = result.getString("name");
@@ -35,7 +55,7 @@
       department = result.getInt("department");
       position = result.getInt("position");
     }else{
-      response.sendRedirect("../.jsp");
+      response.sendRedirect("../index.jsp");
     }
 
     String getPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
@@ -47,8 +67,34 @@
     ResultSet getPlanNumResult = getPlanNumQuery.executeQuery();
     while (getPlanNumResult.next()){
       int planDay = Integer.parseInt(getPlanNumResult.getString("day_column"));
-
       planDayList.add(planDay);
+    }
+
+
+    if(position == 1){
+      String teamMemberSql = "SELECT idx, name, department, position FROM account WHERE department = ? AND position = ?";
+      PreparedStatement teamMemberQuery = connect.prepareStatement(teamMemberSql);
+      teamMemberQuery.setInt(1,department);
+      teamMemberQuery.setInt(2,teamPosition);
+      // 데이터 테이블로 사용
+      ResultSet teamMemberResult = teamMemberQuery.executeQuery();
+
+      while (teamMemberResult.next()) {
+        int teamMemberIdx = teamMemberResult.getInt("idx");
+        String teamMemberName = teamMemberResult.getString("name");
+        int teamMemberDepartment = teamMemberResult.getInt("department");
+        int teamMemberPosition = teamMemberResult.getInt("position");
+
+        teamMemberIdxList.add(teamMemberIdx);
+        nameList.add("\""+teamMemberName+"\"");
+        departmentList.add(teamMemberDepartment);
+        positionList.add(teamMemberPosition);
+
+
+        teamMemberList[0].add("\""+teamMemberName+"\"");
+        teamMemberList[1].add(String.valueOf(teamMemberDepartment));
+        teamMemberList[2].add(String.valueOf(teamMemberPosition));
+      }    
     }
   }
 %>
@@ -69,18 +115,17 @@
       <a href="./userProfilePage.jsp" class="navUserName"></a>
       <input class="closeNavBtn" type="button" value="X" onclick="closeNavEvent()">
     </div>
-
     <div class="otherUserProfile">
-      <p class="otherUserDepartment"></p>
-      <div class="otherUserNames"></div>
+      <p class="teamMemberDepartment"></p>
+      <div class="teamMemberNames"></div>
     </div>
   </nav>
   <main class="main">
   </main>
   <script>
-    var idx = <%=idx%>;
-    var currentYear = <%=currentYear%>;
-    var currentMonth = <%=currentMonth%>;
+    var idx = <%=idx%>
+    var currentYear = <%=currentYear%>
+    var currentMonth = <%=currentMonth%>
 
     var userProfile = {
         name : "<%=name%>",
@@ -89,13 +134,14 @@
         position : <%=position%>,
         planDayList : <%=planDayList%>
     };
-    console.log(userProfile.planDayList)
 
-    var otherUserProfile = {
-      name: ["사용자1","사용자2","사용자3"],
-      department: ["개발팀","개발팀","디자인팀"],
-      position: ["팀원","팀원","팀원"]
+    var teamMemberList = {
+      idx:<%=teamMemberIdxList%>,
+      name: <%=nameList%>,
+      department: <%=departmentList%>,
+      position: <%=positionList%>
     }
+
     function createUserProfile(){
       var navUserInfo = document.querySelector(".navUserInfo")
       var navUserName = document.querySelector(".navUserName")
@@ -113,21 +159,41 @@
       navUserName.textContent = userProfile.name
     }
     
-    function createOtherUserProfile(){
-      var navOtherUserProfile = document.querySelector(".navotherUserProfile")
-      var otherUserDepartment = document.querySelector(".otherUserDepartment")
-      var otherUserNames = document.querySelector(".otherUserNames")
+    function createTeamMemberProfile(){
+      var teamMemberSection = document.querySelector(".navotherUserProfile")
+      var teamMemberDepartment = document.querySelector(".teamMemberDepartment")
+      var teamMemberNames = document.querySelector(".teamMemberNames")
 
-      for(var i = 0; i < otherUserProfile.name.length; i++){
-        if(otherUserProfile.department[i] === userProfile.department){
-          otherUserDepartment.textContent = otherUserProfile.department[i]
-          var otherUserName = document.createElement("p")
-          otherUserName.textContent = otherUserProfile.name[i]
-          otherUserNames.appendChild(otherUserName)
+      for(var i = 0; i < teamMemberList.name.length; i++){
+        if(teamMemberList.department[i] == 1){
+          teamMemberDepartment.textContent = "개발팀"
+        }else{
+          teamMemberDepartment.textContent = "디자인팀"
         }
+          var teamMemberForm = document.createElement("form")
+          var teamMemberName = document.createElement("input")
+          var teamMemberIdx = document.createElement("input")
+          teamMemberForm.id = "teamMemberForm"
+          teamMemberName.type = "submit"
+          teamMemberIdx.type = "hidden"
+          teamMemberName.name = "teamMemberName"
+          teamMemberIdx.name = "teamMemberIdx"
+          teamMemberName.value = teamMemberList.name[i]
+          teamMemberIdx.value = teamMemberList.idx[i]
+          teamMemberName.onclick = teamMemberScheduleEvent
+          teamMemberForm.appendChild(teamMemberIdx)
+          teamMemberForm.appendChild(teamMemberName)
+          teamMemberNames.appendChild(teamMemberForm)
       }
     }
     
+    function teamMemberScheduleEvent(e){
+      e.preventDefault()
+      var teamMemberForm = e.currentTarget.parentElement
+      teamMemberForm.action = "./schedulerPage.jsp"
+      teamMemberForm.submit()
+    }
+    //target과 cureentTarget차의
 
 
     var currentDate = new Date();
@@ -136,17 +202,19 @@
 
       var left = document.createElement("div")
       left.className = "left"
-        var headerbars = document.createElement("i")
-        headerbars.id = "headerbars"
-        headerbars.className = "fa-solid fa-bars headerbars"
-        headerbars.onclick = openNavEvent
-
+        if(userProfile.position === "팀장"){
+          var headerbars = document.createElement("i")
+          headerbars.id = "headerbars"
+          headerbars.className = "fa-solid fa-bars headerbars"
+          headerbars.onclick = openNavEvent
+          left.appendChild(headerbars)
+        }
         var headerLogo = document.createElement("a")
         headerLogo.className = "headerLogo"
         headerLogo.textContent = "Stageus"
         headerLogo.href = "./index.jsp"
 
-      left.appendChild(headerbars)
+
       left.appendChild(headerLogo)
       var center = document.createElement("div")
       center.className = "center"
@@ -223,42 +291,41 @@
       window.location.href = "../action/currentMonthUpdateAction.jsp?currentMonth=" + monthValue;
     }
     function calendar() {
-        var main = document.querySelector(".main")
-        var amountBox = 35;
+      var main = document.querySelector(".main")
+      var amountBox = 35;
 
-        var totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+      var totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-        for (var i = 1; i <= amountBox; i++) {
-            var calendarCell = document.createElement("div")
-            var calendarCellText = document.createElement("p")
-            var cellNum = document.createElement("p")
-            var planTitle = document.createElement("p")
-            cellNum.className = "cellTitle"
-            cellNum.id = "cellNum"
-            planTitle.className = "planTitle"
-            calendarCell.onclick = schedulerDetailOpenEvent
+      for (var i = 1; i <= amountBox; i++) {
+        var calendarCell = document.createElement("div")
+        var calendarCellText = document.createElement("p")
+        var cellNum = document.createElement("p")
+        var planTitle = document.createElement("p")
+        cellNum.className = "cellTitle"
+        cellNum.id = "cellNum"
+        planTitle.className = "planTitle"
+        calendarCell.onclick = schedulerDetailOpenEvent
 
-            if (userProfile.planDayList.includes(i)) {
-            var index = userProfile.planDayList.indexOf(i)
-            var planNumber = userProfile.planDayList[index]
-            var planCount = userProfile.planDayList.filter(num => num === i).length;
+        if (userProfile.planDayList.includes(i)) {
+          var index = userProfile.planDayList.indexOf(i)
+          var planNumber = userProfile.planDayList[index]
+          var planCount = userProfile.planDayList.filter(num => num === i).length;
+          if (planNumber >= 100) {
+              planTitle.textContent = "99+"
+          } else {
+              planTitle.textContent = planCount;
+          }
+          cellNum.textContent = i
+        } else if (i <= totalDaysInMonth) {
+        cellNum.textContent = i
+        } else {
+        cellNum.textContent = ""
+        }
 
-            if (planNumber >= 100) {
-                planTitle.textContent = "99+"
-            } else {
-                planTitle.textContent = planCount;
-            }
-            cellNum.textContent = i
-            } else if (i <= totalDaysInMonth) {
-            cellNum.textContent = i
-            } else {
-            cellNum.textContent = ""
-            }
-
-            calendarCell.appendChild(cellNum)
-            calendarCell.className = "cell"
-            calendarCell.appendChild(planTitle)
-            main.appendChild(calendarCell)
+          calendarCell.appendChild(cellNum)
+          calendarCell.className = "cell"
+          calendarCell.appendChild(planTitle)
+          main.appendChild(calendarCell)
         }
     }
 
@@ -267,10 +334,6 @@
     var cellNum = e.currentTarget.querySelector("#cellNum").textContent
 
     var childWindow = window.open("./schedulerDetailModal.jsp?year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
-
-    // childWindow.onload = ()=>{
-    //   childWindow.receiveUserPlan(userPlan);
-    // }
   }
 
 
@@ -280,7 +343,6 @@
     nav.style.left = "-100%"
     blackBackground.style.display = "none"
   }
-  //함수 이름 통일성 필요
 
   function openNavEvent(){
     var nav = document.querySelector(".nav")
@@ -291,7 +353,7 @@
 
   window.onload = function(){
     createUserProfile()
-    createOtherUserProfile();
+    createTeamMemberProfile();
     createHeader()
     calendar()
   }
