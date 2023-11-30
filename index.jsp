@@ -22,7 +22,7 @@
       <form id="form" class="formstyle">
         <input id="idInput" class="inputStyle" type="text" placeholder="아이디" name="id">
         <input id="passwordInput" class="inputStyle " type="password" placeholder="비밀번호" name="password">
-        <input class="btnStyle loginBtn" type="submit" value="로그인" onclick="loginFormValidationEvent(event)">
+        <input class="btnStyle loginBtn" type="button" value="로그인" onclick="loginFormValidationEvent(event)">
         <a class="btnStyle signUpBtn" href="./page/signUpPage.jsp">회원가입</a>
   
         <a class="aLink" href="./page/findIdPage.jsp">아이디 찾기</a>
@@ -31,8 +31,7 @@
     </section>
   </main>
   <script>
-    function loginFormValidationEvent(e){
-      e.preventDefault()
+    function loginFormValidationEvent(){
       var id = document.querySelector("#idInput")
       var password = document.querySelector("#passwordInput")
       var form = document.querySelector("#form")
@@ -41,7 +40,7 @@
       }else if(!numEnglishValidation(password)){
         return passwordAlert()
       }else{
-        form.action = "./action/loginAction.jsp"
+        form.action = "./action/logInAction.jsp"
         form.submit()
       }
     }
