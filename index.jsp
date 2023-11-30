@@ -36,9 +36,9 @@
       var id = document.querySelector("#idInput")
       var password = document.querySelector("#passwordInput")
       var form = document.querySelector("#form")
-      if(!numEnglishValidationEvent(id)){
+      if(!numEnglishValidation(id)){
         return idAlert()
-      }else if(!numEnglishValidationEvent(password)){
+      }else if(!numEnglishValidation(password)){
         return passwordAlert()
       }else{
         form.action = "./action/loginAction.jsp"

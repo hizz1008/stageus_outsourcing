@@ -1,15 +1,13 @@
-function numEnglishValidationEvent(input){
-  var regex = /^[a-zA-Z0-9]+$/;
+function numEnglishValidation(input){
+  var regex = /^[a-zA-Z0-9]{20}$/;
   if(!regex.test(input.value) ){
     return false
   }else{
     return true
   }
 }
-// 이벤트 지우기
-// 길이체크 추가
-function numValidationEvent(input){
-  var regex = /^\d+$/;
+function numValidation(input){
+  var regex = /^\d{11}$/;
   if(!regex.test(input.value)){
     return false
   }else{
@@ -17,8 +15,8 @@ function numValidationEvent(input){
   }
 }
 
-function koreanValidationEvent(input){
-  var regex = /^[가-힣]+$/;
+function koreanValidation(input){
+  var regex = /^[가-힣]{20}$/;
   if(!regex.test(input.value)){
     return false
   } else{
@@ -26,7 +24,7 @@ function koreanValidationEvent(input){
   }
 }
 
-function contentValidationEvent(input){
+function contentValidation(input){
   var regex = /^[0-9a-zA-Z\uAC00-\uD7A3^\s]+$/;
   if(!regex.test(input)){
     alert("올바른 형식의 내용을 입력해주세요")
@@ -35,7 +33,7 @@ function contentValidationEvent(input){
     return true
   }
 }
-function timeValidationEvent(startHour,endHour,startMin,endMin){
+function timeValidation(startHour,endHour,startMin,endMin){
   if(startHour > endHour || startHour == endHour && startMin >=endMin){
     alert("올바른 시간을 입력해주세요")
     return false
