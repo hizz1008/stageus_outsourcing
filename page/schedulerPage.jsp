@@ -317,9 +317,9 @@
           }
           cellNum.textContent = i
         } else if (i <= totalDaysInMonth) {
-        cellNum.textContent = i
+          cellNum.textContent = i
         } else {
-        cellNum.textContent = ""
+          cellNum.textContent = ""
         }
 
           calendarCell.appendChild(cellNum)
@@ -331,9 +331,12 @@
 
   
   function schedulerDetailOpenEvent(e){
-    var cellNum = e.currentTarget.querySelector("#cellNum").textContent
-
-    var childWindow = window.open("./schedulerDetailModal.jsp?year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+    if(!e.currentTarget.textContent){
+      return
+    }else{
+      var cellNum = e.currentTarget.querySelector("#cellNum").textContent
+      var childWindow = window.open("./schedulerDetailModal.jsp?year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+    }
   }
 
 
