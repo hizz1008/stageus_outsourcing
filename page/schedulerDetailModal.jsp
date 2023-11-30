@@ -27,7 +27,7 @@
 
     Class.forName("com.mysql.cj.jdbc.Driver");
     Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/schedule", "stageus", "1234");
-    String sql = "SELECT idx, start_hour, start_min, end_hour, end_min, content FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ? AND day_column = ?";
+    String sql = "SELECT idx, start_hour, start_min, end_hour, end_min, content FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ? AND day_column = ? ORDER BY start_hour ASC, end_hour ASC";
     PreparedStatement query = connect.prepareStatement(sql);
 
     query.setInt(1, idx);
@@ -183,7 +183,7 @@
 
         var endTime = document.createElement("p")
         endTime.className = "endTime"
-        
+
         var planEditBtnDiv = document.createElement("div")
         planEditBtnDiv.className = "planEditBtnDiv"
 
