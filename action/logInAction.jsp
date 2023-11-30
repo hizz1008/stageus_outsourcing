@@ -17,10 +17,10 @@
   String id = request.getParameter("id");
   String password = request.getParameter("password");
 
-  String regex = "^[a-zA-Z0-9]{20}$";
+  String regex = "^[a-zA-Z0-9]{1,20}$";
   
   if(!id.matches(regex) || !password.matches(regex)){
-    response.sendRedirect("../index.jsp);
+    response.sendRedirect("../index.jsp");
   }else{
     // connector 파일 불러오기
     Class.forName("com.mysql.jdbc.Driver");

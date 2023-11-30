@@ -15,19 +15,18 @@
         <input id="idInput" class="inputStyle" type="text" placeholder="아이디" name="id">
         <input id="telInput" class="inputStyle " type="tel" placeholder="전화번호" name="tel">
         <p class="telValidationTextStyle">- 없이 기입해주세요</p>
-        <input id="loginBtn" class="btnStyle BGcolorBlue" type="submit" value="확인" onclick="findPasswordFormValidationEvent(event)">
+        <input id="loginBtn" class="btnStyle BGcolorBlue" type="button" value="확인" onclick="findPasswordFormValidationEvent(event)">
       </form>
     </section>
   </main>
   <script>
-    function findPasswordFormValidationEvent(e){
-      e.preventDefault()
+    function findPasswordFormValidationEvent(){
       var form = document.querySelector("#form")
       var id = document.querySelector("#idInput")
       var tel = document.querySelector("#telInput")
-      if(!numEnglishValidationEvent(id)){
+      if(!numEnglishValidation(id)){
         return idAlert()
-      }else if(!numValidationEvent(tel) || tel.value.length !== 11){
+      }else if(!numValidation(tel) || tel.value.length !== 11){
         return telAlert()
       }else{
         form.action = "../action/findPasswordAction.jsp"

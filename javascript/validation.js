@@ -1,5 +1,5 @@
 function numEnglishValidation(input){
-  var regex = /^[a-zA-Z0-9]{20}$/;
+  var regex = /^[a-zA-Z0-9]{1,20}$/;
   if(!regex.test(input.value) ){
     return false
   }else{
@@ -16,7 +16,7 @@ function numValidation(input){
 }
 
 function koreanValidation(input){
-  var regex = /^[가-힣]{20}$/;
+  var regex = /^[가-힣]{1,20}$/;
   if(!regex.test(input.value)){
     return false
   } else{

@@ -15,21 +15,20 @@
         <input id="nameInput" class="inputStyle" type="text" placeholder="이름" name="name">
         <input id="telInput" class="inputStyle" type="tel" placeholder="전화번호" name="tel">
         <p class="telValidationTextStyle">- 없이 기입해주세요</p>
-        <input class="btnStyle BGcolorBlue loginBtn" type="submit" value="확인" onclick="findIdFormValidationEvent(event)">
+        <input class="btnStyle BGcolorBlue loginBtn" type="button" value="확인" onclick="findIdFormValidationEvent(event)">
   
         <a class="aLinkStyle" href="./findPasswordPage.jsp">비밀번호 찾기</a>
       </form>
     </section>
   </main>
   <script>
-    function findIdFormValidationEvent(e){
-      e.preventDefault()
+    function findIdFormValidationEvent(){
       var form = document.querySelector("#form")
       var name = document.querySelector("#nameInput")
       var tel = document.querySelector("#telInput")
-      if(!koreanValidationEvent(name)){
+      if(!koreanValidation(name)){
         return alert("올바른 이름을 입력해주세요")
-      }else if(!numValidationEvent(tel) || tel.value.length !== 11){
+      }else if(!numValidation(tel) || tel.value.length !== 11){
         return alert("올바른 전화번호를 입력해주세요")
       }else{
         form.action = "../action/findIdAction.jsp"

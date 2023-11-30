@@ -14,10 +14,10 @@
     <h1 class="titleStyle">스케줄러 로그인</h1>
     <form id="form" class="formstyle">
     <div class="idInputDiv">
-        <input id="idInput" class="idInputStyle" type="text" placeholder="아이디" name="id" onchange="idOnchangeEvent(event)">
+        <input id="idInput" class="idInputStyle" type="text" placeholder="아이디" name="id" onchange="idOnchangeEvent()">
         <input id="idDuplicationInput" type="hidden" name="idDuplication" value="false">
 
-        <input class="idValidationBtn" type="button" value="중복확인" onclick="IdDuplicateCheckEvent(event)">
+        <input class="idValidationBtn" type="button" value="중복확인" onclick="IdDuplicateCheckEvent()">
       </div>
 
       <input id="passwordInput" class="inputStyle" type="password" placeholder="비밀번호" name="password">
@@ -54,7 +54,7 @@
   </main>
   <script>
 
-    function idOnchangeEvent(e){
+    function idOnchangeEvent(){
       idDuplicationInput.value = "false"
     }
 
@@ -66,12 +66,12 @@
       var form = document.querySelector("#form")
       var idInput = document.querySelector("#idInput")
       var idDuplicationInput = document.querySelector("#idDuplicationInput")
-      if(!numEnglishValidationEvent(idInput)){
+      if(!numEnglishValidation(idInput)){
         idInput.disabled = false;
         idDuplicationInput.value = "false"
         return idAlert()
       }else{
-      var childWindow = window.open("../action/idDPCheckAction.jsp?id="+idInput.value,"","width=500,height=300")
+      var childWindow = window.open("../action/checkDPIdAction.jsp?id="+idInput.value,"","width=500,height=300")
       }
     }
 
@@ -103,13 +103,13 @@
 
     if (idDuplicationInput.value === "false"){
       return alert("아이디 중복을 확인해주세요");
-    } else if(!numEnglishValidationEvent(passwordInput)){
+    } else if(!numEnglishValidation(passwordInput)){
       return passwordAlert()
     } else if(passwordInput.value !== passwordConfirmInput.value){
       return alert("비밀번호가 일치하지 않습니다")
-    } else if (!koreanValidationEvent(nameInput)){
+    } else if (!koreanValidation(nameInput)){
       return nameAlert()
-    } else if (!numValidationEvent(telInput) || telInput.value.length !== 11){
+    } else if (!numValidation(telInput) || telInput.value.length !== 11){
       return telAlert()
     } else if(departmentSelect.value === "부서"){
       return alert("부서를 선택해주세요");
