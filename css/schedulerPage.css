@@ -1,83 +1,3 @@
-#headerbars {
-  font-size: 20px;
-  color: white;
-  margin-right: 20%;
-  cursor: pointer;
-}
-
-.header {
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #4285f4;
-  padding: 10px 2%;
-}
-.left,
-.center,
-.right {
-  display: flex;
-  align-items: center;
-  color: white;
-}
-
-.headerLogo {
-  font-size: 30px;
-  color: white;
-  margin-right: 5%;
-}
-.yearText {
-  font-size: 30px;
-  margin: 0 10px;
-}
-#leftBtn,
-#rightBtn {
-  font-size: 30px;
-  cursor: pointer;
-}
-.monthList {
-  font-size: 25px;
-  color: white;
-}
-.selectedMonth {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-.month {
-  width: 40px;
-  height: 40px;
-
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-  text-align: center;
-}
-.userName {
-  width: 100%;
-  font-size: 20px;
-  margin-right: 10%;
-  cursor: pointer;
-  color: white;
-  white-space: nowrap;
-}
-.logoutBtn {
-  width: 100%;
-  font-size: 20px;
-
-  white-space: nowrap;
-
-  color: white;
-  background-color: inherit;
-
-  border: none;
-  cursor: pointer;
-}
 .main {
   box-sizing: border-box;
   padding-top: 56px;
@@ -157,6 +77,15 @@
 }
 .teamMemberNames {
   font-size: 20px;
+}
+.teamMemberNameBtn{
+  cursor: pointer;
+
+  padding: 0;
+  margin-bottom: 5px;
+
+  border: none;
+
 }
 .closeNavBtn {
   position: absolute;

@@ -32,14 +32,22 @@
     query.setString(2, password);
     //result로 실행
     ResultSet result = query.executeQuery();
-    //ResultSet에 대한 값을 저장해 다음 레코드로 이동
-    //해당 값이 있다면 true를 반환 없다면 false를 반환
     if (result.next()) {
       // 로그인 성공
       int currentYear = LocalDate.now().getYear();
       int currentMonth = LocalDate.now().getMonthValue();
       int userIdx = result.getInt("idx");
+      String userName = result.getString("name");
+      String userTel = result.getString("tel");
+      int userDepartment = result.getInt("department");
+      int userPosition = result.getInt("position");
+
       session.setAttribute("loggedInSession", userIdx);
+      session.setAttribute("userName", userName);
+      session.setAttribute("userTel", userTel);
+      session.setAttribute("userDepartment", userDepartment);
+      session.setAttribute("userPosition", userPosition);
+
       session.setAttribute("currentYear", currentYear);
       session.setAttribute("currentMonth", currentMonth);
       response.sendRedirect("../page/schedulerPage.jsp");

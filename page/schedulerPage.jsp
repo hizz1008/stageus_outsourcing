@@ -6,22 +6,24 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="java.util.ArrayList"%>
 <%
+  String memberName = "null";
+  String memberIdx = "";
+
   Integer idx = (Integer)session.getAttribute("loggedInSession");
+  String name = (String) session.getAttribute("userName");
+  String tel = (String) session.getAttribute("userTel");
+  Integer department = (Integer)session.getAttribute("userDepartment");
+  Integer position = (Integer)session.getAttribute("userPosition");
+
+  memberName = (String)session.getAttribute("memberName");
+  memberIdx = (String)session.getAttribute("memberIdx");
+
   Integer currentYear = (Integer)session.getAttribute("currentYear");
   Integer currentMonth = (Integer)session.getAttribute("currentMonth");
 
   Class.forName("com.mysql.cj.jdbc.Driver");
   Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/schedule", "stageus", "1234");
 
-  String name = "";
-  String tel = "";
-  int department = -1;
-  int position = -1;
-
-  int teamPosition = 2;
-
-  int memberIdx = -1;
-  String memberName = "";
 
 
 
@@ -33,31 +35,17 @@
   ArrayList<Integer> departmentList = new ArrayList<Integer>();
   ArrayList<Integer> positionList = new ArrayList<Integer>();
 
-  ArrayList<String>[] teamMemberList = new ArrayList[3];
-  for(int i=0; i<3; i++){
-    teamMemberList[i] = new ArrayList<String>();
-  }
+  ArrayList<Integer> memberPlanDayList = new ArrayList<Integer>();
 
 
 
   if(idx == null){
     response.sendRedirect("../index.jsp");
-  }
-  else{
-    String sql = "SELECT name, tel, department, position FROM account WHERE idx = ?";
-    // 로그인에서 세션으로 해당 정보 저장 가능
-    PreparedStatement query = connect.prepareStatement(sql);
-    query.setInt(1, idx);
-    ResultSet result = query.executeQuery();
-    if (result.next()) {
-      name = result.getString("name");
-      tel = result.getString("tel");
-      department = result.getInt("department");
-      position = result.getInt("position");
-    }else{
-      response.sendRedirect("../index.jsp");
-    }
+  }else{
 
+
+
+    //자신 일정 개수 가져오기
     String getPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
     PreparedStatement getPlanNumQuery = connect.prepareStatement(getPlanNumSql);
     getPlanNumQuery.setInt(1,idx);
@@ -69,13 +57,14 @@
       int planDay = Integer.parseInt(getPlanNumResult.getString("day_column"));
       planDayList.add(planDay);
     }
+    //자신 일정 개수 가져오기
 
 
+    //포지션이 팀장일 때 팀원 가져오기
     if(position == 1){
-      String teamMemberSql = "SELECT idx, name, department, position FROM account WHERE department = ? AND position = ?";
+      String teamMemberSql = "SELECT idx, name, department, position FROM account WHERE department = ? AND position = 2";
       PreparedStatement teamMemberQuery = connect.prepareStatement(teamMemberSql);
       teamMemberQuery.setInt(1,department);
-      teamMemberQuery.setInt(2,teamPosition);
       // 데이터 테이블로 사용
       ResultSet teamMemberResult = teamMemberQuery.executeQuery();
 
@@ -89,19 +78,55 @@
         nameList.add("\""+teamMemberName+"\"");
         departmentList.add(teamMemberDepartment);
         positionList.add(teamMemberPosition);
-
-
-        teamMemberList[0].add("\""+teamMemberName+"\"");
-        teamMemberList[1].add(String.valueOf(teamMemberDepartment));
-        teamMemberList[2].add(String.valueOf(teamMemberPosition));
       }    
     }
+    //포지션이 팀장일 때 팀원 가져오기
+
+    if(request.getParameter("teamMemberName") != null && request.getParameter("teamMemberIdx") != null){
+      memberName = request.getParameter("teamMemberName");
+      memberIdx = request.getParameter("teamMemberIdx");
+
+      session.setAttribute("memberName", memberName);
+      session.setAttribute("memberIdx", memberIdx);
+
+
+      String getMemberPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
+      PreparedStatement getMemberPlanNumQuery = connect.prepareStatement(getMemberPlanNumSql);
+      getMemberPlanNumQuery.setInt(1,Integer.parseInt(memberIdx));
+      getMemberPlanNumQuery.setInt(2,currentYear);
+      getMemberPlanNumQuery.setInt(3,currentMonth);
+
+
+      ResultSet getMemberPlanNumResult = getMemberPlanNumQuery.executeQuery();
+      
+      while(getMemberPlanNumResult.next()){
+        int memberPlanDay = Integer.parseInt(getMemberPlanNumResult.getString("day_column"));
+        memberPlanDayList.add(memberPlanDay);
+      }
+    }
+    else if(memberName != null){
+      String getSessionPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
+      PreparedStatement getSessionPlanNumQuery = connect.prepareStatement(getSessionPlanNumSql);
+
+      getSessionPlanNumQuery.setInt(1,Integer.parseInt(memberIdx));
+      getSessionPlanNumQuery.setInt(2,currentYear);
+      getSessionPlanNumQuery.setInt(3,currentMonth);
+
+      ResultSet getSessionPlanNumResult = getSessionPlanNumQuery.executeQuery();
+      
+      while(getSessionPlanNumResult.next()){
+        int memberPlanDay = Integer.parseInt(getSessionPlanNumResult.getString("day_column"));
+        memberPlanDayList.add(memberPlanDay);
+      }
+    }
+    
   }
 %>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/reset.css" type="text/css">
   <link rel="stylesheet" href="../css/common.css" type="text/css">
+  <link rel="stylesheet" href="../css/loginAfterHeader.css">
   <link rel="stylesheet" href="../css/schedulerPage.css" type="text/css">
   <title>Schedule Page</title>
 </head>
@@ -127,7 +152,12 @@
     var currentYear = <%=currentYear%>
     var currentMonth = <%=currentMonth%>
 
+
+
+
+
     var userProfile = {
+        idx : <%=idx%>,
         name : "<%=name%>",
         tel : "<%=tel%>",
         department : <%=department%>,
@@ -141,6 +171,16 @@
       department: <%=departmentList%>,
       position: <%=positionList%>
     }
+
+    var memberProfile = {
+      idx : <%=memberIdx%>,
+      name : "<%=memberName%>",
+      planDayList : <%=memberPlanDayList%>
+    }
+
+
+
+
 
     function createUserProfile(){
       var navUserInfo = document.querySelector(".navUserInfo")
@@ -171,35 +211,42 @@
           teamMemberDepartment.textContent = "디자인팀"
         }
           var teamMemberForm = document.createElement("form")
-          var teamMemberName = document.createElement("input")
+          var teamMemberNameBtn = document.createElement("input")
           var teamMemberIdx = document.createElement("input")
+          var teamMemberName = document.createElement("input")
           teamMemberForm.id = "teamMemberForm"
-          teamMemberName.type = "submit"
+
           teamMemberIdx.type = "hidden"
-          teamMemberName.name = "teamMemberName"
           teamMemberIdx.name = "teamMemberIdx"
-          teamMemberName.value = teamMemberList.name[i]
           teamMemberIdx.value = teamMemberList.idx[i]
-          teamMemberName.onclick = teamMemberScheduleEvent
+
+          teamMemberName.type = "hidden"
+          teamMemberName.name = "teamMemberName"
+          teamMemberName.value = teamMemberList.name[i]
+          
+          teamMemberNameBtn.type = "button"
+          teamMemberNameBtn.className = "teamMemberNameBtn"
+          teamMemberNameBtn.name = "teamMemberNameBtn"
+          teamMemberNameBtn.value = teamMemberList.name[i]
+          teamMemberNameBtn.onclick = teamMemberScheduleEvent
+
           teamMemberForm.appendChild(teamMemberIdx)
           teamMemberForm.appendChild(teamMemberName)
+          teamMemberForm.appendChild(teamMemberNameBtn)
           teamMemberNames.appendChild(teamMemberForm)
       }
     }
     
-    function teamMemberScheduleEvent(e){
-      e.preventDefault()
-      var teamMemberForm = e.currentTarget.parentElement
-      teamMemberForm.action = "./schedulerPage.jsp"
-      teamMemberForm.submit()
-    }
+
     //target과 cureentTarget차의
 
 
     var currentDate = new Date();
+
     function createHeader(){
       var header = document.querySelector(".header")
 
+      //left
       var left = document.createElement("div")
       left.className = "left"
         if(userProfile.position === "팀장"){
@@ -216,6 +263,8 @@
 
 
       left.appendChild(headerLogo)
+      //left
+      //center
       var center = document.createElement("div")
       center.className = "center"
         var leftBtn = document.createElement("i")
@@ -249,71 +298,68 @@
       center.appendChild(yearText)
       center.appendChild(rightBtn)
       center.appendChild(monthList)
-
+      //center
+      //rigth
       var right = document.createElement("div")
         right.className = "right"
         var userName = document.createElement("a")
         userName.className = "userName"
         userName.textContent = userProfile.name
-        userName.href = "./userProfilePage.jsp"
+        userName.onclick = refreshEvent
     
         var logoutBtn = document.createElement("a")
         logoutBtn.className = "logoutBtn"
         logoutBtn.href = "../action/logOutAction.jsp"
         logoutBtn.textContent = "로그아웃"
 
-      right.appendChild(userName)
-      right.appendChild(logoutBtn)
+        if(memberProfile.name != "null"){
+          var memberName = document.createElement("p")
+          memberName.textContent = memberProfile.name
+          memberName.className = "memberName"
+          userName.textContent = "내 일정"
+          userName.onclick = refreshEvent
+          right.appendChild(userName)
+          right.appendChild(memberName)
+        }else{
+          right.appendChild(userName)
+          right.appendChild(logoutBtn)
+        }
+
+
 
       header.appendChild(left)
       header.appendChild(center)
       header.appendChild(right)
+      //rigth
     }
+
+    //create header
     
+  function calendar(profile) {
+    var main = document.querySelector(".main");
+    var amountBox = 35;
 
-    function leftBtnEvent(){
-      var yearText = document.querySelector(".yearText")
-      window.location.href = "../action/minusCurrentYearAction.jsp";
-    }
+    var totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    function rightBtnEvent(){
-      var yearText = document.querySelector(".yearText")
-      window.location.href = "../action/plusCurrentYearAction.jsp";
-    }
+    for (var i = 1; i <= amountBox; i++) {
+      var calendarCell = document.createElement("div");
+      var calendarCellText = document.createElement("p");
+      var cellNum = document.createElement("p");
+      var planTitle = document.createElement("p");
+      cellNum.className = "cellTitle"
+      cellNum.id = "cellNum"
+      planTitle.className = "planTitle"
+      calendarCell.onclick = schedulerDetailOpenEvent
 
-    function monthEvent(e){
-      var monthCells = document.querySelectorAll(".month")
-      monthCells.forEach(cell=>{
-        cell.classList.remove("selectedMonth")
-      })
-      var monthCell = e.target
-      var monthValue = monthCell.value
-      window.location.href = "../action/currentMonthUpdateAction.jsp?currentMonth=" + monthValue;
-    }
-    function calendar() {
-      var main = document.querySelector(".main")
-      var amountBox = 35;
-
-      var totalDaysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-
-      for (var i = 1; i <= amountBox; i++) {
-        var calendarCell = document.createElement("div")
-        var calendarCellText = document.createElement("p")
-        var cellNum = document.createElement("p")
-        var planTitle = document.createElement("p")
-        cellNum.className = "cellTitle"
-        cellNum.id = "cellNum"
-        planTitle.className = "planTitle"
-        calendarCell.onclick = schedulerDetailOpenEvent
-
-        if (userProfile.planDayList.includes(i)) {
-          var index = userProfile.planDayList.indexOf(i)
-          var planNumber = userProfile.planDayList[index]
-          var planCount = userProfile.planDayList.filter(num => num === i).length;
+      if (profile.planDayList) {
+        if (profile.planDayList.includes(i)) {
+          var index = profile.planDayList.indexOf(i)
+          var planNumber = profile.planDayList[index]
+          var planCount = profile.planDayList.filter(num => num === i).length
           if (planNumber >= 100) {
-              planTitle.textContent = "99+"
+            planTitle.textContent = "99+"
           } else {
-              planTitle.textContent = planCount;
+            planTitle.textContent = planCount
           }
           cellNum.textContent = i
         } else if (i <= totalDaysInMonth) {
@@ -321,21 +367,67 @@
         } else {
           cellNum.textContent = ""
         }
-
-          calendarCell.appendChild(cellNum)
-          calendarCell.className = "cell"
-          calendarCell.appendChild(planTitle)
-          main.appendChild(calendarCell)
+      } else {
+        if (i <= totalDaysInMonth) {
+          cellNum.textContent = i
+        } else {
+          cellNum.textContent = ""
         }
-    }
+      }
 
+      calendarCell.appendChild(cellNum);
+      calendarCell.className = "cell";
+      calendarCell.appendChild(planTitle);
+      main.appendChild(calendarCell);
+    }
+  }
+
+
+  function refreshEvent(){
+    memberProfile.name = "null"
+    memberProfile.planDayList = []
+
+    window.location.href = "../action/deleteMemberSessionAction.jsp"
+  }
+
+  function teamMemberScheduleEvent(e){
+    e.preventDefault()
+    var teamMemberForm = e.currentTarget.parentElement
+    teamMemberForm.action = "./schedulerPage.jsp"
+    teamMemberForm.submit()
+  }
+
+  function leftBtnEvent(){
+    var yearText = document.querySelector(".yearText")
+    window.location.href = "../action/minusCurrentYearAction.jsp";
+  }
+
+  function rightBtnEvent(){
+    var yearText = document.querySelector(".yearText")
+    window.location.href = "../action/plusCurrentYearAction.jsp";
+  }
+
+  function monthEvent(e){
+    var monthCells = document.querySelectorAll(".month")
+    monthCells.forEach(cell=>{
+      cell.classList.remove("selectedMonth")
+    })
+    var monthCell = e.target
+    var monthValue = monthCell.value
+    window.location.href = "../action/updateCurrentMonthAction.jsp?currentMonth=" + monthValue;
+  }
   
   function schedulerDetailOpenEvent(e){
     if(!e.currentTarget.textContent){
       return
-    }else{
+    }
+    else if(memberProfile.name != "null"){
       var cellNum = e.currentTarget.querySelector("#cellNum").textContent
-      var childWindow = window.open("./schedulerDetailModal.jsp?year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+      var childWindow = window.open("./schedulerDetailModal.jsp?idx=" + memberProfile.idx + "&year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+    }
+    else{
+      var cellNum = e.currentTarget.querySelector("#cellNum").textContent
+      var childWindow = window.open("./schedulerDetailModal.jsp?idx=" + userProfile.idx + "&year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
     }
   }
 
@@ -358,7 +450,11 @@
     createUserProfile()
     createTeamMemberProfile();
     createHeader()
-    calendar()
+    if(memberProfile.name == "null"){
+      calendar(userProfile)
+    } else {
+      calendar(memberProfile)
+    }
   }
 
   

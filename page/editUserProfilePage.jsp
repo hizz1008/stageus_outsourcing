@@ -78,17 +78,16 @@
       document.querySelector("#telInput").value = userProfile.tel
     }
     function editUserInputValidationEvent(e){
-      e.preventDefault()
       var nameInput = document.querySelector("#nameInput")
       var telInput = document.querySelector("#telInput")
       var form = document.querySelector("#form")
 
-      if(!koreanValidationEvent(nameInput)){
+      if(!koreanValidation(nameInput)){
         return nameAlert()
-      }else if(!numValidationEvent(telInput) || telInput.value.length !== 11){
+      }else if(!numValidation(telInput) || telInput.value.length !== 11){
         return telAlert()
       }else{
-        form.action = "../action/updateUserProfileAction.jsp"
+        form.action = "../action/editUserProfileAction.jsp"
         form.submit()
       }
     }

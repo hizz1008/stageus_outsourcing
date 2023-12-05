@@ -6,12 +6,10 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="java.util.ArrayList"%>
 <%
-    Integer idx = (Integer)session.getAttribute("loggedInSession");
     Integer year = (Integer)session.getAttribute("currentYear");
     Integer month = (Integer)session.getAttribute("currentMonth");
     
-    //int year = Integer.parseInt(request.getParameter("year"));
-    //int month = Integer.parseInt(request.getParameter("month"));
+    int idx = Integer.parseInt(request.getParameter("idx"));
     int day = Integer.parseInt(request.getParameter("day"));
 
     //session.setAttribute("currentYear", year);
