@@ -27,15 +27,19 @@
 }
 
 .planArticle{
-  width: 60%;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-
-
 }
-/* 섹션 나누기, */
+.memberPlanArticle{
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
 .planDiv{
   display: flex;
@@ -43,7 +47,7 @@
 
   width: 50%;
 }
-.planEditSection{
+.planEditForm{
   display: none;
   align-items: center;
 }
@@ -60,16 +64,19 @@
 }
 .planTitle{
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 33.3%;
 }
 .startTime{
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 33.3%;
 }
 .endTime{
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 33.3%;
 }

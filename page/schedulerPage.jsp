@@ -6,8 +6,7 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="java.util.ArrayList"%>
 <%
-  String memberName = "null";
-  String memberIdx = "";
+
 
   Integer idx = (Integer)session.getAttribute("loggedInSession");
   String name = (String) session.getAttribute("userName");
@@ -15,18 +14,18 @@
   Integer department = (Integer)session.getAttribute("userDepartment");
   Integer position = (Integer)session.getAttribute("userPosition");
 
-  memberName = (String)session.getAttribute("memberName");
-  memberIdx = (String)session.getAttribute("memberIdx");
+  String memberName = (String)session.getAttribute("memberName");
+  Integer memberIdx = (Integer)session.getAttribute("memberIdx");
+  if(memberName == null && memberIdx == null){
+    memberName = "null";
+    memberIdx = -1;
+  }
 
   Integer currentYear = (Integer)session.getAttribute("currentYear");
   Integer currentMonth = (Integer)session.getAttribute("currentMonth");
 
   Class.forName("com.mysql.cj.jdbc.Driver");
   Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/schedule", "stageus", "1234");
-
-
-
-
 
   ArrayList<Integer> planDayList = new ArrayList<Integer>();
 
@@ -37,14 +36,9 @@
 
   ArrayList<Integer> memberPlanDayList = new ArrayList<Integer>();
 
-
-
   if(idx == null){
     response.sendRedirect("../index.jsp");
   }else{
-
-
-
     //자신 일정 개수 가져오기
     String getPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
     PreparedStatement getPlanNumQuery = connect.prepareStatement(getPlanNumSql);
@@ -58,7 +52,6 @@
       planDayList.add(planDay);
     }
     //자신 일정 개수 가져오기
-
 
     //포지션이 팀장일 때 팀원 가져오기
     if(position == 1){
@@ -82,17 +75,13 @@
     }
     //포지션이 팀장일 때 팀원 가져오기
 
-    if(request.getParameter("teamMemberName") != null && request.getParameter("teamMemberIdx") != null){
-      memberName = request.getParameter("teamMemberName");
-      memberIdx = request.getParameter("teamMemberIdx");
-
-      session.setAttribute("memberName", memberName);
-      session.setAttribute("memberIdx", memberIdx);
-
+    if(memberName != null && memberIdx != -1){
+      //세션을 사용하고 있기에 그것으로 예외처리 사용
+      //if문 순서 다시 설정
 
       String getMemberPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
       PreparedStatement getMemberPlanNumQuery = connect.prepareStatement(getMemberPlanNumSql);
-      getMemberPlanNumQuery.setInt(1,Integer.parseInt(memberIdx));
+      getMemberPlanNumQuery.setInt(1,memberIdx);
       getMemberPlanNumQuery.setInt(2,currentYear);
       getMemberPlanNumQuery.setInt(3,currentMonth);
 
@@ -103,23 +92,7 @@
         int memberPlanDay = Integer.parseInt(getMemberPlanNumResult.getString("day_column"));
         memberPlanDayList.add(memberPlanDay);
       }
-    }
-    else if(memberName != null){
-      String getSessionPlanNumSql = "SELECT day_column FROM plan WHERE account_idx = ? AND year_column = ? AND month_column = ?";
-      PreparedStatement getSessionPlanNumQuery = connect.prepareStatement(getSessionPlanNumSql);
-
-      getSessionPlanNumQuery.setInt(1,Integer.parseInt(memberIdx));
-      getSessionPlanNumQuery.setInt(2,currentYear);
-      getSessionPlanNumQuery.setInt(3,currentMonth);
-
-      ResultSet getSessionPlanNumResult = getSessionPlanNumQuery.executeQuery();
-      
-      while(getSessionPlanNumResult.next()){
-        int memberPlanDay = Integer.parseInt(getSessionPlanNumResult.getString("day_column"));
-        memberPlanDayList.add(memberPlanDay);
-      }
-    }
-    
+    }    
   }
 %>
 <head>
@@ -152,10 +125,6 @@
     var currentYear = <%=currentYear%>
     var currentMonth = <%=currentMonth%>
 
-
-
-
-
     var userProfile = {
         idx : <%=idx%>,
         name : "<%=name%>",
@@ -177,10 +146,6 @@
       name : "<%=memberName%>",
       planDayList : <%=memberPlanDayList%>
     }
-
-
-
-
 
     function createUserProfile(){
       var navUserInfo = document.querySelector(".navUserInfo")
@@ -393,7 +358,7 @@
   function teamMemberScheduleEvent(e){
     e.preventDefault()
     var teamMemberForm = e.currentTarget.parentElement
-    teamMemberForm.action = "./schedulerPage.jsp"
+    teamMemberForm.action = "../action/saveMemberSessionAction.jsp"
     teamMemberForm.submit()
   }
 
@@ -417,19 +382,22 @@
     window.location.href = "../action/updateCurrentMonthAction.jsp?currentMonth=" + monthValue;
   }
   
+  
   function schedulerDetailOpenEvent(e){
+    var childWindow
     if(!e.currentTarget.textContent){
       return
     }
     else if(memberProfile.name != "null"){
       var cellNum = e.currentTarget.querySelector("#cellNum").textContent
-      var childWindow = window.open("./schedulerDetailModal.jsp?idx=" + memberProfile.idx + "&year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+      childWindow = window.open("./schedulerDetailModal.jsp?day=" + cellNum, "_blank", "width=700,height=800");
     }
     else{
       var cellNum = e.currentTarget.querySelector("#cellNum").textContent
-      var childWindow = window.open("./schedulerDetailModal.jsp?idx=" + userProfile.idx + "&year=" + currentYear + "&month=" + currentMonth + "&day=" + cellNum, "_blank", "width=700,height=800");
+      childWindow = window.open("./schedulerDetailModal.jsp?day=" + cellNum, "_blank", "width=700,height=800");
     }
   }
+
 
 
   function closeNavEvent(){

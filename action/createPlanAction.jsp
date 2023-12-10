@@ -11,11 +11,10 @@
   Integer currentDay = (Integer)session.getAttribute("currentDay");
   String content = request.getParameter("content");
 
-  String redirectURL = "../page/schedulerDetailModal.jsp?year=" + currentYear + "&month=" + currentMonth + "&day=" + currentDay;
-
-  String regex = "^[0-9a-zA-Z\\uAC00-\\uD7A3^\\s]+$";
+  String regex = "^(?!(\\s|\\S*\\s{50,})).{1,50}$";
+  //과한 정규표현식 빈값만 체그하면 됨
   if(!content.matches(regex)){
-    response.sendRedirect(redirectURL);
+    response.sendRedirect("../page/schedulerDetailModal.jsp");
   }else{
     String start_hour = request.getParameter("startHour");
     String start_min = request.getParameter("startMin");
@@ -41,6 +40,6 @@
     query.setString(9, content);
   
     query.executeUpdate();
-    response.sendRedirect(redirectURL);
+    response.sendRedirect("../page/schedulerDetailModal.jsp");
   }
 %>

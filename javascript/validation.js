@@ -25,7 +25,7 @@ function koreanValidation(input){
 }
 
 function contentValidation(input){
-  var regex = /^[0-9a-zA-Z\uAC00-\uD7A3^\s]+$/;
+  var regex = /^(?!(\s|\S*\s{50,})).{1,50}$/
   if(!regex.test(input)){
     alert("올바른 형식의 내용을 입력해주세요")
     return false

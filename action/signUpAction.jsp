@@ -17,8 +17,10 @@
   String numEnglishRegex = "^[a-zA-Z0-9]{1,20}$";
   String koreanRegex = "^[가-힣]{1,20}$";
   String telRegex = "^\\d{11}$";
+  //각각 따로 만들어서 사용
 
   if(!id.matches(numEnglishRegex) || !password.matches(numEnglishRegex) || !name.matches(koreanRegex) || !tel.matches(telRegex)){
+    //직책과 부서도 예외처리 해야함
     response.sendRedirect("../page/signUpPage.jsp");
   }else{
     Class.forName("com.mysql.jdbc.Driver");
@@ -32,6 +34,7 @@
     ResultSet resultSet = queryDuplicate.executeQuery();
     if(!resultSet.next()){
       if(tel.length() == 11){
+        //이차 검증은 공식에서 어긋남
         String sql = "INSERT INTO account (id, password, name, tel, department, position) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement query = connect.prepareStatement(sql);
         query.setString(1, id);

@@ -11,7 +11,7 @@
   String startMin = request.getParameter("planEditStartMin");
   String endHour = request.getParameter("planEditEndHour");
   String endMin = request.getParameter("planEditEndMin");
-  String idx = request.getParameter("deleteIdx");
+  String idx = request.getParameter("planEditIdx");
 
   Class.forName("com.mysql.cj.jdbc.Driver");
   Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/schedule", "stageus", "1234");
