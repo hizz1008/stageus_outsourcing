@@ -305,6 +305,9 @@
     }
 
     //엔터가 눌렸을 때 동작 제어
+    //등록 인풋에 포커스가 되었을 때 엔터가 눌린다면 동작하게 하려 했으나
+    //등록 인풋에 일정을 적고 시간을 조정한 다음 엔터를 눌러도 동작하게 하기 위해
+    //조건을 키다운 인터로 정함
     document.addEventListener("keydown", function(event){
       if(event.key === "Enter"){
         event.preventDefault()

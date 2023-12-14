@@ -53,7 +53,11 @@
    </section>
   </main>
   <script>
-
+    document.addEventListener("keydown", function(event){
+      if(event.key === "Enter"){
+        signUpValidationEvent()
+      }
+    });
     function idOnchangeEvent(){
       idDuplicationInput.value = "false"
     }

@@ -31,6 +31,12 @@
     </section>
   </main>
   <script>
+    document.addEventListener("keydown", function(event){
+      if(event.key === "Enter"){
+        loginFormValidationEvent()
+      }
+    });
+
     function loginFormValidationEvent(){
       var id = document.querySelector("#idInput")
       var password = document.querySelector("#passwordInput")
@@ -45,6 +51,8 @@
       }
     }
   </script>
+  
+  
   <script src="./javascript/validation.js"></script>
   <script src="./javascript/beforeLoginHeader.js"></script>
 </body>
